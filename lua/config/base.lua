@@ -53,7 +53,8 @@ vim.cmd([[let &t_Ce = "\e[4:0m"]])
 
 -- Line color when splitting windows
 -- vim.cmd('highlight WinSeparator guibg=#4A628A guifg=#7AB2D3')
-vim.cmd('highlight WinSeparator guifg=#5F8FA3')
+vim.cmd('highlight WinSeparator guifg=#5f8fa3')
+
 
 vim.api.nvim_create_autocmd("InsertLeave", {
   pattern = '*',
@@ -68,3 +69,22 @@ vim.g.mapleader = " "
 -- Autocomplete for cmdline
 vim.opt.wildmenu = true
 vim.opt.wildmode = "longest:full,full"
+
+
+vim.opt.list = true
+vim.opt.listchars = {
+  tab = "→ ",
+  trail = "·",
+  nbsp = "␣",
+  eol = "↵",
+}
+
+-- Identation for c#
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "cs", "cshtml", "razor" },
+  callback = function()
+    vim.bo.tabstop = 4
+    vim.bo.shiftwidth = 4
+    vim.bo.expandtab = true
+  end,
+})

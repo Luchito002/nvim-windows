@@ -69,7 +69,7 @@ return {
         lualine_a = {
           {
             function()
-              local logo = "" -- icono de Neovim
+              local logo = ""
               return logo .. " " .. modes()
             end,
           }

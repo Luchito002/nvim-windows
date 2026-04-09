@@ -6,59 +6,37 @@ return {
     priority = 1000,
     config = function()
       require("nightfox").setup({
-
         options = {
           transparent = true,
-          terminal_colors = true,
-          dim_inactive = false,
-          module_default = true,
           styles = {
-            comments = "NONE", -- sin italic
-
-            keywords = "NONE", -- sin bold/italic
-            types = "NONE",    -- sin bold/italic
-          },
-          inverse = {
-            match_paren = false,
-            visual = false,
-            search = false,
+            comments = "italic",
+            keywords = "bold",
+            types = "bold",
           },
         },
-        palettes = {}, -- override de colores base si quieres
-        groups = {},   -- grupos globales
-        on_highlights = function(hl, c)
-          -- Ventanas normales y no activas
-          hl.Normal       = { fg = c.fg1, bg = "NONE" }
-          hl.NormalNC     = { fg = c.fg1, bg = "NONE" }
-          hl.SignColumn   = { bg = "NONE" }
 
-          hl.LineNr       = { fg = c.comment, bg = "NONE" }
-          hl.CursorLineNr = { fg = c.cyan, bg = "NONE", bold = true }
-          hl.EndOfBuffer  = { fg = c.bg0, bg = "NONE" }
-          hl.StatusLine   = { fg = c.fg1, bg = "NONE" }
+        specs = {
+          all = {
+            syntax = {
+              keyword = "#2ec7c4",
+              --type = "#c94f6d",
+              type = "#7DCFFF",
+            },
+          },
+        },
 
-          hl.StatusLineNC = { fg = c.comment, bg = "NONE" }
-          hl.TabLine      = { fg = c.comment, bg = "NONE" }
+        groups = {
+          all = {
+            ["@keyword"] = { fg = "syntax.keyword", style = "bold" },
+            ["@keyword.modifier"] = { fg = "syntax.keyword", style = "bold" },
+            ["@keyword.import"] = { fg = "syntax.keyword", style = "bold" },
 
-          hl.TabLineFill  = { bg = "NONE" }
-          hl.TabLineSel   = { fg = c.cyan, bg = "NONE", bold = true }
-          hl.VertSplit    = { fg = c.comment, bg = "NONE" }
-          hl.WinSeparator = { fg = c.comment, bg = "NONE" }
+            ["@type"] = { fg = "syntax.type", style = "bold" },
+            ["@type.builtin"] = { fg = "syntax.type", style = "bold" },
 
-          hl.FloatBorder  = { fg = c.comment, bg = "NONE" }
-          hl.Pmenu        = { fg = c.fg1, bg = "NONE" }
-          hl.PmenuSel     = { fg = c.bg0, bg = "NONE", bold = true }
-
-
-          -- Ventanas flotantes como Lazy, Mason, etc
-          hl.TelescopeNormal = { fg = c.fg1, bg = "NONE" }
-          hl.TelescopeBorder = { fg = c.comment, bg = "NONE" }
-          hl.MasonNormal     = { fg = c.fg1, bg = "NONE" }
-          hl.MasonBorder     = { fg = c.comment, bg = "NONE" }
-          hl.LazyNormal      = { fg = c.fg1, bg = "NONE" }
-          hl.LazyBorder      = { fg = c.comment, bg = "NONE" }
-        end,
-
+            ["@namespace"] = { fg = "syntax.type", style = "bold" },
+          },
+        },
       })
 
       -- activar esquema Carbonfox
@@ -66,7 +44,7 @@ return {
 
       vim.api.nvim_set_hl(0, "@decorator", { fg = "#9d00ff", italic = true })
       vim.api.nvim_set_hl(0, "@attribute", { fg = "#9d00ff", bold = true })
-      vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#00ab64", bold = true })
+      vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#5F8FA3", bold = true })
 
 
       -- integración con lualine

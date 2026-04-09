@@ -54,7 +54,7 @@ return {
             { id = "scopes",      size = 0.6 },
             { id = "breakpoints", size = 0.4 },
           },
-          size = 40,
+          size = 60,
           position = "left",
         },
       },

@@ -23,6 +23,6 @@ return {
       },
     })
 
-    vim.keymap.set("n", "-", ":Neotree toggle<CR>", { silent = true })
+    vim.keymap.set("n", "<leader>-", ":Neotree toggle<CR>", { silent = true })
   end,
 }
