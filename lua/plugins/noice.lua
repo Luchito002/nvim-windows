@@ -7,7 +7,6 @@ return {
   event = "VeryLazy",
   opts = {
     lsp = {
-
       -- disable diagnostics messages
       progress = {
         enabled = false,

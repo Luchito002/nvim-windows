@@ -1,10 +1,9 @@
 return {
   "tribela/transparent.nvim",
   event = "VimEnter",
-  enable = false,
+  enable = true,
   config = function()
     require("transparent").setup({
-
       auto = true,
       extra_groups = {
         "StatusLine",

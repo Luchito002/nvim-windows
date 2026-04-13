@@ -45,6 +45,8 @@ return {
       vim.api.nvim_set_hl(0, "@decorator", { fg = "#9d00ff", italic = true })
       vim.api.nvim_set_hl(0, "@attribute", { fg = "#9d00ff", bold = true })
       vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#5F8FA3", bold = true })
+      vim.api.nvim_set_hl(0, "Visual", { bg = "#5c2a2a", fg = "NONE" })
+      vim.api.nvim_set_hl(0, "TelescopeMatching", { bg = "#7f1d1d", fg = "#ffffff", bold = true })
 
 
       -- integración con lualine

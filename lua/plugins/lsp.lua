@@ -37,7 +37,15 @@ return {
           vim.keymap.set("n", "<space>f", function() vim.lsp.buf.format({ async = true }) end, opts)
         end,
       })
+
+
     local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+    capabilities.textDocument = capabilities.textDocument or {}
+    capabilities.textDocument.foldingRange = {
+      dynamicRegistration = false,
+      lineFoldingOnly = true,
+    }
 
     require("neodev").setup()
 
@@ -70,21 +78,53 @@ return {
     vim.lsp.config("tailwindcss", { capabilities = capabilities })
     vim.lsp.config("gradle_ls", { capabilities = capabilities })
     vim.lsp.config("prismals", { capabilities = capabilities })
+    vim.filetype.add({
+      extension = {
+        cshtml = "cshtml",
+      },
+    })
+    vim.lsp.config("html", { capabilities = capabilities, filetypes = { "html", "cshtml" } })
 
     local lspconfig = require("lspconfig")
     local util = require("lspconfig.util")
 
+
+
     lspconfig.omnisharp.setup({
-      cmd = { vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp.cmd", "--languageserver", "--hostPID", tostring(vim.fn.getpid()), "DotNet:enablePackageRestore=true", "--encoding", "utf-8", },
-      root_dir =
-          util.root_pattern("*.sln", "*.csproj"),
+      cmd = {
+        vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp.cmd",
+        "--languageserver",
+        "--hostPID",
+        tostring(vim.fn.getpid()),
+        "DotNet:enablePackageRestore=true",
+        "--encoding",
+        "utf-8",
+      },
+      root_dir = util.root_pattern("*.sln", "*.csproj"),
       capabilities = capabilities,
       enable_roslyn_analyzers = true,
       enable_import_completion = true,
       organize_imports_on_format = true,
-      settings = { RoslynExtensionsOptions = { EnableAnalyzersSupport = true, EnableImportCompletion = true, }, },
+      settings = {
+        RoslynExtensionsOptions = {
+          EnableAnalyzersSupport = true,
+          EnableImportCompletion = true,
+        },
+      },
     })
-    vim.lsp.enable({ "lua_ls", "clangd", "pyright", "ts_ls", "cssls", "jsonls", "eslint", "tailwindcss", "gradle_ls",
-      "prismals", })
+
+    vim.lsp.enable({
+      "lua_ls",
+      "clangd",
+      "pyright",
+      "ts_ls",
+      "cssls",
+      "jsonls",
+      "eslint",
+      "tailwindcss",
+      "gradle_ls",
+      "prismals",
+      "html"
+    })
   end,
 }

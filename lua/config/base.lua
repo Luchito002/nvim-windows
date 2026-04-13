@@ -88,3 +88,25 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.expandtab = true
   end,
 })
+
+-- Mostrar mensaje al iniciar grabación
+vim.api.nvim_create_autocmd("RecordingEnter", {
+  callback = function()
+    local reg = vim.fn.reg_recording()
+    vim.notify("Grabando macro @" .. reg, vim.log.levels.INFO)
+  end,
+})
+
+-- Mostrar mensaje al terminar grabación
+vim.api.nvim_create_autocmd("RecordingLeave", {
+  callback = function()
+    vim.notify("Macro guardada", vim.log.levels.INFO)
+  end,
+})
+
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
+
+-- opcional (por si blink usa estos)
+vim.api.nvim_set_hl(0, "BlinkCmpDoc", { bg = "none" })
+vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { bg = "none" })
