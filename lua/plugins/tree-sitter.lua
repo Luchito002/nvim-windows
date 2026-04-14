@@ -6,6 +6,17 @@ return {
   config = function()
     vim.env.CC = "gcc"
 
+    local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+
+    parser_config.razor = {
+      install_info = {
+        url = "https://github.com/tris203/tree-sitter-razor",
+        files = { "src/parser.c", "src/scanner.c" },
+        branch = "master",
+      },
+      filetype = "razor",
+    }
+
     require("nvim-treesitter.configs").setup({
       ensure_installed = {
         "lua",
@@ -20,18 +31,20 @@ return {
         "prisma",
         "http",
         "json",
+        "razor",
       },
 
       highlight = {
         enable = true,
+        disable = { "razor" },
       },
 
       indent = {
         enable = true,
+        disable = { "razor" },
       },
     })
 
-    -- folds
     vim.api.nvim_create_autocmd("FileType", {
       callback = function()
         vim.wo.foldmethod = "expr"

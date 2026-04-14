@@ -1,11 +1,10 @@
 return {
   "williamboman/mason.nvim",
   config = true,
-
   opts = {
-    ensure_installed = {
-      "csharpier",
-      "netcoredbg"
-    }
-  }
+    registries = {
+      "github:mason-org/mason-registry",
+      "github:crashdummyy/mason-registry",
+    },
+  },
 }

@@ -1,7 +1,7 @@
 return {
   "lukas-reineke/indent-blankline.nvim",
   main = "ibl",
-
+  enabled = false,
   config = function()
     local hooks = require("ibl.hooks")
 
@@ -42,7 +42,7 @@ return {
     require("ibl").setup({
       indent = {
         char = "┊",
-        highlight = shuffle(base_highlight), -- 🔥 aleatorio
+        highlight = shuffle(base_highlight),
       },
       scope = {
         enabled = false,

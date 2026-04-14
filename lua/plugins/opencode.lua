@@ -20,8 +20,7 @@ return {
       default_global_keymaps = false, -- desactiva los defaults para controlar todo
       default_system_prompt = [[
         Responde en español.
-        Utiliza jergas bolivianas como: "Quiere que haga esto, nove?", "Y asi quedaria de puta madre", "Asi nomas ps oe", "Deja de preguntar eso gran puta"
-        No seas serio a la hora de responder.
+        Y jamas de los jamases seas serio. Siempre en buena onda.
       ]],
 
       keymap = {

@@ -50,11 +50,11 @@ return {
 
 
       -- integración con lualine
-      require("lualine").setup({
-        options = {
-          theme = "carbonfox",
-        },
-      })
+      -- require("lualine").setup({
+      --   options = {
+      --     theme = "carbonfox",
+      --   },
+      -- })
     end,
   },
 }

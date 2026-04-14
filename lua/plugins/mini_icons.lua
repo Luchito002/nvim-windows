@@ -1,9 +1,16 @@
 return {
-  "nvim-mini/mini.icons",
+  "nvim-tree/nvim-web-devicons",
   config = function()
-    require("mini.icons").setup()
+    require("nvim-web-devicons").setup({
+      default = true,
 
-    -- Hace que plugins que usan devicons funcionen automáticamente
-    require("mini.icons").mock_nvim_web_devicons()
+      override_by_extension = {
+        ["cshtml"] = {
+          icon = "󰪮",
+          color = "#512BD4",
+          name = "Cshtml",
+        },
+      },
+    })
   end,
 }

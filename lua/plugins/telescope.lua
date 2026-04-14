@@ -12,7 +12,7 @@ return {
     },
   },
   event = "VeryLazy",
-
+  enabled = false,
   opts = {
     defaults = {
       layout_strategy = "horizontal",
@@ -91,17 +91,17 @@ return {
     { "<leader>b",        "<cmd>Telescope buffers<cr>",     desc = "Open Buffers" },
     { "<leader>th",       "<cmd>Telescope help_tags<cr>",   desc = "Open Help tags" },
     { "<leader>c",        "<cmd>Telescope colorscheme<cr>", desc = "Select colorscheme" },
-    {
-      "<leader>e",
-      function()
-        require("telescope").extensions.file_browser.file_browser({
-          path = "%:h:p",
-          select_buffer = true,
-        })
-      end,
-      desc = "Open file browser",
-
-    },
+    -- {
+    --   "<leader>e",
+    --   function()
+    --     require("telescope").extensions.file_browser.file_browser({
+    --       path = "%:h:p",
+    --       select_buffer = true,
+    --     })
+    --   end,
+    --   desc = "Open file browser",
+    --
+    -- },
 
     -- git
     { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Git Branches selector" },

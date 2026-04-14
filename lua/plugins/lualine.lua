@@ -1,7 +1,7 @@
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
-
+  enabled = false,
   config = function()
     local mode_map = {
       ["n"] = "通常",

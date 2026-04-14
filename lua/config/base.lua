@@ -110,3 +110,9 @@ vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 -- opcional (por si blink usa estos)
 vim.api.nvim_set_hl(0, "BlinkCmpDoc", { bg = "none" })
 vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { bg = "none" })
+
+
+vim.keymap.set("n", "<leader>o", function()
+  local file = vim.fn.expand("%")
+  vim.fn.jobstart({ "cmd", "/c", "start", file }, { detach = true })
+end)

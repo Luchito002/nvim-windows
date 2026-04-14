@@ -1,6 +1,10 @@
 return {
   "neovim/nvim-lspconfig",
-  dependencies = { "williamboman/mason.nvim", "folke/neodev.nvim", },
+  dependencies = {
+    "williamboman/mason.nvim",
+    "folke/neodev.nvim",
+    "seblyng/roslyn.nvim",
+  },
   config = function()
     vim.diagnostic.config({
       virtual_text = true,
@@ -78,39 +82,30 @@ return {
     vim.lsp.config("tailwindcss", { capabilities = capabilities })
     vim.lsp.config("gradle_ls", { capabilities = capabilities })
     vim.lsp.config("prismals", { capabilities = capabilities })
-    vim.filetype.add({
-      extension = {
-        cshtml = "cshtml",
+    vim.lsp.config("html", {
+      capabilities = capabilities,
+      filetypes = { "html" },
+    })
+    vim.lsp.config("emmet_language_server", {
+      capabilities = capabilities,
+      filetypes = {
+        "html",
+        "css",
+        "scss",
+        "javascriptreact",
+        "typescriptreact",
       },
     })
-    vim.lsp.config("html", { capabilities = capabilities, filetypes = { "html", "cshtml" } })
 
-    local lspconfig = require("lspconfig")
-    local util = require("lspconfig.util")
-
-
-
-    lspconfig.omnisharp.setup({
-      cmd = {
-        vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp.cmd",
-        "--languageserver",
-        "--hostPID",
-        tostring(vim.fn.getpid()),
-        "DotNet:enablePackageRestore=true",
-        "--encoding",
-        "utf-8",
+    -- for csharp
+    vim.filetype.add({
+      extension = {
+        razor = "razor",
+        cshtml = "razor",
       },
-      root_dir = util.root_pattern("*.sln", "*.csproj"),
+    })
+    vim.lsp.config("roslyn", {
       capabilities = capabilities,
-      enable_roslyn_analyzers = true,
-      enable_import_completion = true,
-      organize_imports_on_format = true,
-      settings = {
-        RoslynExtensionsOptions = {
-          EnableAnalyzersSupport = true,
-          EnableImportCompletion = true,
-        },
-      },
     })
 
     vim.lsp.enable({
@@ -124,7 +119,9 @@ return {
       "tailwindcss",
       "gradle_ls",
       "prismals",
-      "html"
+      "html",
+      "roslyn",
+      "emmet_language_server",
     })
   end,
 }
