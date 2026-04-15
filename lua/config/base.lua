@@ -116,3 +116,17 @@ vim.keymap.set("n", "<leader>o", function()
   local file = vim.fn.expand("%")
   vim.fn.jobstart({ "cmd", "/c", "start", file }, { detach = true })
 end)
+
+vim.opt.autoread = true
+
+vim.api.nvim_create_autocmd({
+  "FocusGained",
+  "BufEnter",
+  "CursorHold",
+  "CursorHoldI",
+}, {
+  pattern = "*",
+  command = "checktime",
+})
+
+vim.opt.conceallevel = 2

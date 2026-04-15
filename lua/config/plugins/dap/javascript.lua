@@ -20,7 +20,6 @@ dap.configurations.typescriptreact = {
     sourceMaps = true,
     trace = true,
 
-    -- DEBUG EXTRA
     log_file_path = vim.fn.stdpath("cache") .. "/dap_js.log",
   },
 }

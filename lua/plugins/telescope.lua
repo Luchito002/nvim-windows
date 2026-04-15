@@ -20,13 +20,13 @@ return {
         horizontal = { prompt_position = "top" },
       },
       sorting_strategy = "ascending",
-      mappings = {
-        i = {
-          ["<C-j>"] = require("telescope.actions").move_selection_next,
+      -- mappings = {
+      --   i = {
+      --     ["<C-j>"] = require("telescope.actions").move_selection_next,
 
-          ["<C-k>"] = require("telescope.actions").move_selection_previous,
-        },
-      },
+      --     ["<C-k>"] = require("telescope.actions").move_selection_previous,
+      --   },
+      -- },
     },
     pickers = {
       find_files = {
