@@ -1,7 +1,7 @@
 -- lua/config/plugins/dap/python.lua
 local dap = require("dap")
 
--- Intérprete del proyecto (runtime de su app)
+-- Project interpreter (runtime for your app)
 local function python_path_from_cwd()
   local cwd = vim.fn.getcwd()
   if vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
@@ -43,7 +43,7 @@ dap.configurations.python = {
     request = "launch",
     name = "Launch file (Alacritty)",
     program = "${file}",
-    pythonPath = python_path_from_cwd,   -- intérprete del proyecto
+    pythonPath = python_path_from_cwd,   -- project interpreter
     redirectOutput = true,               -- duplica stdout/err al panel de DAP UI (opcional)
   },
 }

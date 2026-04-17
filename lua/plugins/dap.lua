@@ -104,10 +104,17 @@ return {
           size = 40,
           position = "left",
         },
+        {
+          elements = {
+            { id = "repl", size = 1.0 },
+          },
+          size = 12,
+          position = "bottom",
+        },
       },
 
       controls = {
-        enabled = false,
+        enabled = true,
         element = "repl",
         icons = {
           pause = "⏸",
@@ -142,6 +149,7 @@ return {
     vim.keymap.set("n", "ds", dap.step_over, { desc = "Step over" })
     vim.keymap.set("n", "di", dap.step_into, { desc = "Step into" })
     vim.keymap.set("n", "do", dap.step_out, { desc = "Step out" })
+    vim.keymap.set("n", "dj", function() require("dap").run_to_cursor()end, { desc = "Run to cursor" })
 
     vim.keymap.set("v", "K", function()
       dapui.eval(nil, {
@@ -151,18 +159,22 @@ return {
     end, { desc = "DAP eval selection" })
 
     dap.listeners.after.event_initialized["dapui_config"] = function()
-      pcall(dapui.open)
+      dapui.open()
     end
 
     dap.listeners.before.event_terminated["dapui_config"] = function()
-      pcall(dapui.close)
+      dapui.close()
     end
 
     dap.listeners.before.event_exited["dapui_config"] = function()
-      pcall(dapui.close)
+      dapui.close()
     end
 
     require("config.plugins.dap.python")
-    require("config.plugins.dap.csharp")
+
+    local csharp = require("config.plugins.dap.csharp")
+    vim.keymap.set("n", "dp", function()
+      csharp.pick_entry()
+    end, { desc = "Pick .NET project" })
   end,
 }

@@ -5,7 +5,7 @@ return {
   config = function()
     local hooks = require("ibl.hooks")
 
-    -- lista base
+    -- base list
     local base_highlight = {
       "IndentRed",
       "IndentYellow",
@@ -16,7 +16,7 @@ return {
       "IndentCyan",
     }
 
-    -- función para mezclar (shuffle)
+    -- shuffle function
     local function shuffle(tbl)
       local t = vim.tbl_deep_extend("force", {}, tbl)
       for i = #t, 2, -1 do
@@ -26,7 +26,7 @@ return {
       return t
     end
 
-    -- semilla para aleatoriedad
+    -- seed for randomness
     math.randomseed(os.time())
 
     hooks.register(hooks.type.HIGHLIGHT_SETUP, function()

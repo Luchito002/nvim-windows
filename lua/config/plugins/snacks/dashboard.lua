@@ -16,7 +16,7 @@ return {
       padding = 1,
     },
 
-    -- ACCIONES
+    -- ACTIONS
     {
       icon = " ",
       title = "操作\n",
@@ -25,7 +25,7 @@ return {
       padding = 1,
     },
 
-    -- BOTÓN EXTRA
+    -- EXTRA BUTTON
     {
       pane = 2,
       icon = " ",
@@ -37,7 +37,7 @@ return {
       padding = 1,
     },
 
-    -- RECIENTES
+    -- RECENTS
     {
       pane = 2,
       icon = " ",
@@ -47,7 +47,7 @@ return {
       padding = 1,
     },
 
-    -- PROYECTOS
+    -- PROJECTS
     {
       pane = 2,
       icon = " ",

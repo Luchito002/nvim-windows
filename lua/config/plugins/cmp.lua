@@ -127,7 +127,7 @@ function M.setup()
 --     vim.schedule(function()
 --       local bufnr = 0
 --
---       -- Obtener diagnósticos en la línea actual
+--       -- Get diagnostics on current line
 --       local line = vim.api.nvim_win_get_cursor(0)[1] - 1
 --       local diagnostics = vim.diagnostic.get(bufnr, { lnum = line })
 --
@@ -135,7 +135,7 @@ function M.setup()
 --         return
 --       end
 --
---       -- Detectar errores típicos de "falta using"
+--       -- Detect typical "missing using" errors
 --       local needs_import = false
 --
 --       for _, d in ipairs(diagnostics) do

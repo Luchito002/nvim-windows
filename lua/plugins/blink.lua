@@ -15,7 +15,7 @@ return {
         auto_show_delay_ms = 200,
         window = {
           border = "rounded",
-          -- importante: hacemos que docs use NormalFloat / FloatBorder
+          -- important: make docs use NormalFloat / FloatBorder
           winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:BlinkCmpDocCursorLine,Search:None",
           winblend = 0,
         },
@@ -23,7 +23,7 @@ return {
 
       menu = {
         border = "rounded",
-        -- importante: hacemos que el menú use Pmenu / FloatBorder
+        -- important: make the menu use Pmenu / FloatBorder
         winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
         winblend = 0,
       },

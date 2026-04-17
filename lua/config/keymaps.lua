@@ -27,19 +27,9 @@ keymap.set('n', 'sk', '<C-w>k')
 keymap.set('n', 'sj', '<C-w>j')
 keymap.set('n', 'sl', '<C-w>l')
 
--- Resize window
-keymap.set('n', 'rl', '<C-w><')
-keymap.set('n', 'rh', '<C-w>>')
-keymap.set('n', 'rj', '<C-w>+')
-keymap.set('n', 'rk', '<C-w>-')
-
--- :Explore like nerd tree
-keymap.set('i', '<C-b>', '<Esc>:Lex<CR>:vertical resize 30<CR>', { noremap = true, silent = true })
-keymap.set('n', '<C-b>', ':Lex<CR>:vertical resize 30<CR>', { noremap = true, silent = true })
-
 -- Result
 keymap.set('n', 'n', 'nzzzv', { desc = "Goes to the next result on the search and put the cursor in the middle" })
 keymap.set('n', 'N', 'Nzzzv', { desc = "Goes to the prev result on the search and put the cursor in the middle" })
 
--- Show diagnostics
-vim.api.nvim_set_keymap('n', '<leader>vds', ':lua vim.diagnostic.setqflist()<CR>', { noremap = true, silent = true })
+-- Exit terminal mode
+keymap.set('t', '<leader><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })

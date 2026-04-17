@@ -6,6 +6,7 @@ return {
   },
   config = function()
     local conditions = require("heirline.conditions")
+    local devicons = require("nvim-web-devicons")
 
     local colors = {
       fg          = "#c0caf5",
@@ -125,8 +126,28 @@ return {
 
     local FileName = {
       {
-        provider = "  ",
-        hl = { fg = colors.file_icon, bold = true },
+        provider = "  ",
+        hl = { fg = "#e5c07b", bold = true, force = true },
+      },
+      {
+        provider = function()
+          local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+          return cwd ~= "" and (cwd .. "/") or ""
+        end,
+        hl = { fg = colors.file_text, bold = true },
+      },
+      {
+        provider = function()
+          local filename = vim.fn.expand("%:t")
+          if filename == "" then
+            return "  "
+          end
+
+          local ext = vim.fn.expand("%:e")
+          local icon, _ = devicons.get_icon(filename, ext, { default = true })
+          return " " .. icon .. " "
+        end,
+        hl = { fg = "#e06c75", bold = true, force = true },
       },
       {
         provider = function()
@@ -193,7 +214,11 @@ return {
     }
 
     local DiagnosticsBlock = {
-      condition = conditions.has_diagnostics,
+      condition = function()
+        local errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
+        local warns  = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
+        return errors > 0 or warns > 0
+      end,
       { provider = "", hl = { fg = colors.diag } },
       Diagnostics,
       { provider = "", hl = { fg = colors.diag } },

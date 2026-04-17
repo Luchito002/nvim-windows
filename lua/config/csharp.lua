@@ -1,7 +1,7 @@
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
   pattern = "*.cs",
   callback = function()
-    -- Solo si el archivo está vacío
+    -- Only if the file is empty
     if vim.api.nvim_buf_line_count(0) > 1 then
       return
     end

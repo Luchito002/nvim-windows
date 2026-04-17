@@ -3,7 +3,7 @@ local function set_picker_hl()
   local purple = "#B284BE"
   local green = "#5de4c7"
 
-  -- Título/borde general del bloque izquierdo
+  -- General title/border for left block
   vim.api.nvim_set_hl(0, "SnacksPickerBorder", { fg = cyan })
   vim.api.nvim_set_hl(0, "SnacksPickerTitle", { fg = cyan, bold = true })
 
@@ -51,8 +51,8 @@ return {
           width = 0.50,
           border = "rounded",
           title = "{title}",
-          { win = "input", height = 1, border = "bottom" },
-          { win = "list", border = "none" },
+          { win = "input", height = 1,     border = "bottom" },
+          { win = "list",  border = "none" },
         },
         {
           win = "preview",
@@ -124,6 +124,13 @@ return {
           minimal = true,
         },
       },
+    },
+    explorer = {
+      hidden = true,
+      ignored = false,
+      exclude = {},
+      diagnostics = false,
+      git_status = false,
     },
   },
 }

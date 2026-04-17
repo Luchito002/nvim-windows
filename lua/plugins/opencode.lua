@@ -17,7 +17,7 @@ return {
     require("opencode").setup({
       opencode_executable = [[C:\ProgramData\chocolatey\bin\opencode.exe]],
       keymap_prefix = "<leader>o",
-      default_global_keymaps = false, -- desactiva los defaults para controlar todo
+      default_global_keymaps = false, -- disable defaults to control everything
       default_system_prompt = [[
         Responde en español.
         Y jamas de los jamases seas serio. Siempre en buena onda.

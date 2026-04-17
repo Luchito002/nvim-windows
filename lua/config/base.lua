@@ -89,18 +89,18 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Mostrar mensaje al iniciar grabación
+-- Show message when recording starts
 vim.api.nvim_create_autocmd("RecordingEnter", {
   callback = function()
     local reg = vim.fn.reg_recording()
-    vim.notify("Grabando macro @" .. reg, vim.log.levels.INFO)
+    vim.notify("Recording macro @" .. reg, vim.log.levels.INFO)
   end,
 })
 
--- Mostrar mensaje al terminar grabación
+-- Show message when recording ends
 vim.api.nvim_create_autocmd("RecordingLeave", {
   callback = function()
-    vim.notify("Macro guardada", vim.log.levels.INFO)
+    vim.notify("Macro saved", vim.log.levels.INFO)
   end,
 })
 

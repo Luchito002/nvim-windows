@@ -3,14 +3,14 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   cmd = "Trouble",
   keys = {
-    -- Diagnósticos de TODO el proyecto
+    -- Project-wide diagnostics
     {
       "<leader>xx",
       "<cmd>Trouble diagnostics toggle<cr>",
       desc = "Diagnostics (workspace)",
     },
 
-    -- Diagnósticos SOLO del archivo actual
+    -- Diagnostics for current file only
     {
       "<leader>xX",
       "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
@@ -34,7 +34,7 @@ return {
       desc = "LSP Implementations",
     },
 
-    -- Símbolos SOLO del archivo actual
+    -- Symbols for current file only
     {
       "<leader>xs",
       "<cmd>Trouble symbols toggle focus=false<cr>",

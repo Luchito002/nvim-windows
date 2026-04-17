@@ -106,6 +106,9 @@ return {
     })
     vim.lsp.config("roslyn", {
       capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        client.server_capabilities.semanticTokensProvider = nil
+      end,
     })
 
     vim.lsp.enable({

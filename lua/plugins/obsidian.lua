@@ -34,7 +34,7 @@ return {
     { "<leader>zn", "<cmd>ObsidianNew<CR>", desc = "New note" },
     { "<leader>zo", "<cmd>ObsidianOpen<CR>", desc = "Open in Obsidian app" },
 
-    -- Búsqueda
+    -- Search
     { "<leader>zs", "<cmd>ObsidianSearch<CR>", desc = "Search notes" },
     { "<leader>zf", "<cmd>ObsidianQuickSwitch<CR>", desc = "Find note" },
 
@@ -42,7 +42,7 @@ return {
     { "<leader>zl", "<cmd>ObsidianLink<CR>", mode = "v", desc = "Link selection" },
     { "<leader>zL", "<cmd>ObsidianLinkNew<CR>", mode = "v", desc = "Create + link note" },
 
-    -- Navegación
+    -- Navigation
     { "<leader>zb", "<cmd>ObsidianBacklinks<CR>", desc = "Backlinks" },
     { "<leader>zt", "<cmd>ObsidianTags<CR>", desc = "Tags" },
 
