@@ -1,7 +1,8 @@
 return {
   "neovim/nvim-lspconfig",
   dependencies = {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
+    "mason-org/mason-lspconfig.nvim",
     "folke/neodev.nvim",
     "seblyng/roslyn.nvim",
   },
@@ -20,28 +21,31 @@ return {
       update_in_insert = false,
       severity_sort = true,
     })
+
     vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
     vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
     vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
     vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist)
-    vim.api.nvim_create_autocmd("LspAttach",
-      {
-        desc = "LSP keymaps",
-        callback = function(args)
-          local bufnr = args.buf
-          local opts = { buffer = bufnr }
-          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-          vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-          vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-          vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-          vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
-          vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
-          vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-          vim.keymap.set("n", "<space>f", function() vim.lsp.buf.format({ async = true }) end, opts)
-        end,
-      })
 
+    vim.api.nvim_create_autocmd("LspAttach", {
+      desc = "LSP keymaps",
+      callback = function(args)
+        local bufnr = args.buf
+        local opts = { buffer = bufnr }
+
+        vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+        vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+        vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
+        vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
+        vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+        vim.keymap.set("n", "<space>f", function()
+          vim.lsp.buf.format({ async = true })
+        end, opts)
+      end,
+    })
 
     local capabilities = require("blink.cmp").get_lsp_capabilities()
 
@@ -73,9 +77,13 @@ return {
         },
       },
     })
+
     vim.lsp.config("clangd", { capabilities = capabilities })
     vim.lsp.config("pyright", { capabilities = capabilities })
-    vim.lsp.config("ts_ls", { capabilities = capabilities, flags = { debounce_text_changes = 300 }, })
+    vim.lsp.config("ts_ls", {
+      capabilities = capabilities,
+      flags = { debounce_text_changes = 300 },
+    })
     vim.lsp.config("cssls", { capabilities = capabilities })
     vim.lsp.config("jsonls", { capabilities = capabilities })
     vim.lsp.config("eslint", { capabilities = capabilities })
@@ -97,18 +105,37 @@ return {
       },
     })
 
-    -- for csharp
     vim.filetype.add({
       extension = {
         razor = "razor",
         cshtml = "razor",
       },
     })
+
     vim.lsp.config("roslyn", {
       capabilities = capabilities,
       on_attach = function(client, bufnr)
         client.server_capabilities.semanticTokensProvider = nil
       end,
+    })
+
+    require("mason-lspconfig").setup({
+      ensure_installed = {
+        "lua_ls",
+        "clangd",
+        "pyright",
+        "ts_ls",
+        "cssls",
+        "jsonls",
+        "eslint",
+        "tailwindcss",
+        "gradle_ls",
+        "prismals",
+        "html",
+        "emmet_language_server",
+        --"roslyn",
+      },
+      automatic_enable = true,
     })
 
     vim.lsp.enable({

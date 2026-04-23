@@ -1,55 +1,53 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  branch = "main",
   lazy = false,
-  branch = "master",
   build = ":TSUpdate",
   config = function()
     vim.env.CC = "gcc"
 
-    local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+    local ts = require("nvim-treesitter")
 
-    parser_config.razor = {
-      install_info = {
-        url = "https://github.com/tris203/tree-sitter-razor",
-        files = { "src/parser.c", "src/scanner.c" },
-        branch = "master",
-      },
-      filetype = "razor",
-    }
+    ts.setup({
+      install_dir = vim.fn.stdpath("data") .. "/site",
+    })
 
-    require("nvim-treesitter.configs").setup({
-      ensure_installed = {
+    ts.install({
+      "lua",
+      "javascript",
+      "typescript",
+      "tsx",
+      "python",
+      "c_sharp",
+      "java",
+      "html",
+      "cpp",
+      "prisma",
+      "http",
+      "json",
+    })
+
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = {
         "lua",
         "javascript",
         "typescript",
-        "tsx",
+        "typescriptreact",
+        "javascriptreact",
         "python",
-        "c_sharp",
+        "cs",
         "java",
         "html",
         "cpp",
         "prisma",
         "http",
         "json",
-        "razor",
       },
-
-      highlight = {
-        enable = true,
-        disable = { "razor" },
-      },
-
-      indent = {
-        enable = true,
-        disable = { "razor" },
-      },
-    })
-
-    vim.api.nvim_create_autocmd("FileType", {
-      callback = function()
-        vim.wo.foldmethod = "expr"
-        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-        vim.wo.foldlevel = 99
+      callback = function(ev)
+        pcall(vim.treesitter.start, ev.buf)
+        vim.wo[0][0].foldmethod = "expr"
+        vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        vim.wo[0][0].foldlevel = 99
       end,
     })
   end,
