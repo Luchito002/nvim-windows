@@ -63,19 +63,31 @@ return {
     local dap = require("dap")
     local dapui = require("dapui")
 
-    vim.fn.sign_define("DapBreakpoint", { text = "🐞", texthl = "DiagnosticError", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapBreakpointCondition", { text = "🟡", texthl = "DiagnosticWarn", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapBreakpointRejected", { text = "❌", texthl = "DiagnosticError", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapBreakpointDisabled", { text = "⚫", texthl = "DiagnosticHint", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapBreakpointVerified", { text = "🟢", texthl = "DiagnosticOk", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapLogPoint", { text = "💬", texthl = "DiagnosticHint", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapStopped", { text = "💀", texthl = "DiagnosticInfo", linehl = "Visual", numhl = "" })
-    vim.fn.sign_define("DapPaused", { text = "⏸️", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapRunning", { text = "🏃‍♂️", texthl = "DiagnosticOk", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapExited", { text = "🚪", texthl = "DiagnosticHint", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapTerminated", { text = "🛑", texthl = "DiagnosticError", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapRestart", { text = "🔁", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapException", { text = "🔥", texthl = "DiagnosticError", linehl = "", numhl = "" })
+    -- DAP colors
+    vim.api.nvim_set_hl(0, "DapRed", { fg = "#ab031f" })
+    vim.api.nvim_set_hl(0, "DapYellow", { fg = "#b58900" })
+    vim.api.nvim_set_hl(0, "DapGreen", { fg = "#859900" })
+    vim.api.nvim_set_hl(0, "DapBlue", { fg = "#268bd2" })
+    vim.api.nvim_set_hl(0, "DapCyan", { fg = "#2aa198" })
+    vim.api.nvim_set_hl(0, "DapPurple", { fg = "#6c71c4" })
+    vim.api.nvim_set_hl(0, "DapGray", { fg = "#586e75" })
+    vim.api.nvim_set_hl(0, "DapOrange", { fg = "#cb4b16" })
+
+    -- DAP signs
+    vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DapRed", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "DapYellow", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "DapRed", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapBreakpointDisabled", { text = "", texthl = "DapGray", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapBreakpointVerified", { text = "", texthl = "DapGreen", linehl = "", numhl = "" })
+
+    vim.fn.sign_define("DapLogPoint", { text = "󰌕", texthl = "DapCyan", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapStopped", { text = "💀", texthl = "DapBlue", linehl = "Visual", numhl = "" })
+    vim.fn.sign_define("DapPaused", { text = "", texthl = "DapYellow", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapRunning", { text = "", texthl = "DapGreen", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapExited", { text = "", texthl = "DapGray", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapTerminated", { text = "", texthl = "DapRed", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapRestart", { text = "", texthl = "DapPurple", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapException", { text = "", texthl = "DapOrange", linehl = "", numhl = "" })
 
     dapui.setup({
       icons = {
@@ -101,14 +113,14 @@ return {
             { id = "scopes",      size = 0.6 },
             { id = "breakpoints", size = 0.4 },
           },
-          size = 40,
+          size = 30,
           position = "left",
         },
         {
           elements = {
             { id = "repl", size = 1.0 },
           },
-          size = 12,
+          size = 10,
           position = "bottom",
         },
       },
@@ -149,7 +161,7 @@ return {
     vim.keymap.set("n", "ds", dap.step_over, { desc = "Step over" })
     vim.keymap.set("n", "di", dap.step_into, { desc = "Step into" })
     vim.keymap.set("n", "do", dap.step_out, { desc = "Step out" })
-    vim.keymap.set("n", "dj", function() require("dap").run_to_cursor()end, { desc = "Run to cursor" })
+    vim.keymap.set("n", "dj", function() require("dap").run_to_cursor() end, { desc = "Run to cursor" })
 
     vim.keymap.set("v", "K", function()
       dapui.eval(nil, {

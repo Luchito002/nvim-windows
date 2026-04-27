@@ -19,6 +19,8 @@ return {
     rename = { enabled = true },
     words = { enabled = false },
     zen = { enabled = true },
+    terminal = require("config.plugins.snacks.terminal"),
+    lazygit = require("config.plugins.snacks.lazygit")
   },
 
   keys = {
@@ -30,5 +32,11 @@ return {
     { "<leader>c",        function() Snacks.picker.colorschemes() end, desc = "Select colorscheme" },
 
     { "<leader>-",        function() Snacks.explorer() end,            desc = "Explorer" },
+
+    { "<A-f>",            function() Snacks.terminal.toggle() end,     mode = { "n", "t" },              desc = "Terminal flotante" },
+
+    { "<leader>gg",       function() Snacks.lazygit.open() end,        desc = "Lazygit" },
+    { "<leader>gl",       function() Snacks.lazygit.log() end,         desc = "Lazygit Log" },
+    { "<leader>gf",       function() Snacks.lazygit.log_file() end,    desc = "Lazygit Current File Log" },
   },
 }

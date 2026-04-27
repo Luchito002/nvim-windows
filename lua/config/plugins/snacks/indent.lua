@@ -50,7 +50,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 return {
-  enabled = true,
+  enabled = false,
 
   indent = {
     char = "┊",

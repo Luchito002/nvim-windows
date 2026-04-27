@@ -83,6 +83,13 @@ return {
     vim.lsp.config("ts_ls", {
       capabilities = capabilities,
       flags = { debounce_text_changes = 300 },
+      filetypes = {
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "vue",
+      },
     })
     vim.lsp.config("cssls", { capabilities = capabilities })
     vim.lsp.config("jsonls", { capabilities = capabilities })
@@ -104,7 +111,10 @@ return {
         "typescriptreact",
       },
     })
-
+    vim.lsp.config("vue_ls", {
+      capabilities = capabilities,
+      filetypes = { "vue" },
+    })
     vim.filetype.add({
       extension = {
         razor = "razor",
@@ -134,6 +144,7 @@ return {
         "html",
         "emmet_language_server",
         --"roslyn",
+        "vue_ls",
       },
       automatic_enable = true,
     })
@@ -152,6 +163,7 @@ return {
       "html",
       "roslyn",
       "emmet_language_server",
+      "vue_ls",
     })
   end,
 }

@@ -3,7 +3,15 @@ return {
   dependencies = { "rafamadriz/friendly-snippets" },
   version = "1.*",
   opts = {
-    keymap = { preset = "enter" },
+    keymap = {
+      preset = "enter",
+
+      ["<C-n>"] = { "select_next", "fallback" },
+      ["<C-p>"] = { "select_prev", "fallback" },
+
+      ["<C-d>"] = { "scroll_documentation_down", "fallback" },
+      ["<C-u>"] = { "scroll_documentation_up", "fallback" },
+    },
 
     appearance = {
       nerd_font_variant = "mono",
