@@ -25,6 +25,7 @@ return {
       "prisma",
       "http",
       "json",
+      "css"
     })
 
     vim.api.nvim_create_autocmd("FileType", {
@@ -42,6 +43,7 @@ return {
         "prisma",
         "http",
         "json",
+        "css"
       },
       callback = function(ev)
         pcall(vim.treesitter.start, ev.buf)

@@ -51,20 +51,28 @@ return {
     local Align = { provider = "%=" }
     local Space = { provider = " " }
 
-    local is_narrow = function()
-      return vim.o.columns < 100
+    local function win_width()
+      return vim.api.nvim_win_get_width(0)
     end
 
-    local is_tiny = function()
-      return vim.o.columns < 80
+    local function enough(width)
+      return win_width() >= width
     end
 
-    local show_branch = function()
-      return vim.o.columns >= 90
+    local function is_narrow()
+      return not enough(90)
     end
 
-    local show_lsp = function()
-      return vim.o.columns >= 110
+    local function is_tiny()
+      return not enough(70)
+    end
+
+    local function show_branch()
+      return enough(85)
+    end
+
+    local function show_lsp()
+      return enough(115)
     end
 
     local Bubble = function(bg, fg, content)
@@ -83,6 +91,7 @@ return {
 
     local mode_color = function()
       local m = vim.fn.mode(1)
+
       local map = {
         n = colors.blue,
         no = colors.blue,
@@ -104,6 +113,7 @@ return {
       init = function(self)
         self.mode = vim.fn.mode(1)
       end,
+
       static = {
         names = {
           n = "通常",
@@ -116,16 +126,19 @@ return {
           t = "端末",
         },
       },
+
       {
         provider = "  ",
         hl = { fg = colors.mode_text, bold = true },
       },
+
       {
         provider = function(self)
           return (self.names[self.mode] or self.mode) .. " "
         end,
         hl = { fg = colors.mode_text, bold = true },
       },
+
       hl = function()
         return {
           fg = colors.mode_text,
@@ -133,6 +146,7 @@ return {
           bold = true,
         }
       end,
+
       update = {
         "ModeChanged",
         pattern = "*:*",
@@ -149,9 +163,10 @@ return {
         end,
         hl = { fg = colors.yellow, bold = true, force = true },
       },
+
       {
         condition = function()
-          return not is_narrow()
+          return enough(95)
         end,
         provider = function()
           local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
@@ -159,6 +174,7 @@ return {
         end,
         hl = { fg = colors.file_text, bold = true },
       },
+
       {
         provider = function()
           local filename = vim.fn.expand("%:t")
@@ -168,12 +184,13 @@ return {
           end
 
           local ext = vim.fn.expand("%:e")
-          local icon, _ = devicons.get_icon(filename, ext, { default = true })
+          local icon = devicons.get_icon(filename, ext, { default = true })
 
           return " " .. icon .. " "
         end,
         hl = { fg = colors.red, bold = true, force = true },
       },
+
       {
         provider = function()
           local name = vim.fn.expand("%:t")
@@ -182,8 +199,18 @@ return {
             return "[No Name] "
           end
 
-          if is_tiny() and #name > 24 then
+          local width = win_width()
+
+          if width < 70 and #name > 14 then
+            return name:sub(1, 11) .. "... "
+          end
+
+          if width < 90 and #name > 24 then
             return name:sub(1, 21) .. "... "
+          end
+
+          if width < 120 and #name > 34 then
+            return name:sub(1, 31) .. "... "
           end
 
           return name .. " "
@@ -196,20 +223,29 @@ return {
 
     local GitBranch = {
       condition = conditions.is_git_repo,
+
       init = function(self)
         self.status = vim.b.gitsigns_status_dict
       end,
+
       {
         provider = "  ",
         hl = { fg = colors.git_icon, bold = true },
       },
+
       {
         provider = function(self)
           local branch = self.status and self.status.head or ""
+
+          if win_width() < 100 and #branch > 16 then
+            branch = branch:sub(1, 13) .. "..."
+          end
+
           return branch .. " "
         end,
         hl = { fg = colors.git_text, bold = true },
       },
+
       hl = { fg = colors.git_text, bg = colors.gitred, bold = true },
     }
 
@@ -217,6 +253,7 @@ return {
       condition = function()
         return show_branch() and conditions.is_git_repo()
       end,
+
       { provider = "", hl = { fg = colors.gitred } },
       GitBranch,
       { provider = "", hl = { fg = colors.gitred } },
@@ -224,10 +261,12 @@ return {
 
     local Diagnostics = {
       condition = conditions.has_diagnostics,
+
       init = function(self)
         self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
         self.warns = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
       end,
+
       {
         provider = function(self)
           if self.errors > 0 then
@@ -237,6 +276,7 @@ return {
         end,
         hl = { fg = colors.diag_err, bold = true },
       },
+
       {
         provider = function(self)
           if self.warns > 0 then
@@ -246,6 +286,7 @@ return {
         end,
         hl = { fg = colors.diag_warn, bold = true },
       },
+
       hl = { fg = colors.black, bg = colors.diag, bold = true },
     }
 
@@ -253,8 +294,10 @@ return {
       condition = function()
         local errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
         local warns = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
+
         return errors > 0 or warns > 0
       end,
+
       { provider = "", hl = { fg = colors.diag } },
       Diagnostics,
       { provider = "", hl = { fg = colors.diag } },
@@ -264,10 +307,12 @@ return {
       condition = function()
         return #vim.lsp.get_clients({ bufnr = 0 }) > 0
       end,
+
       {
-        provider = "  ",
+        provider = "   ",
         hl = { fg = colors.lsp_icon, bold = true },
       },
+
       {
         provider = function()
           local names = {}
@@ -276,10 +321,17 @@ return {
             table.insert(names, lsp.name)
           end
 
-          return table.concat(names, ", ") .. " "
+          local text = table.concat(names, ", ")
+
+          if win_width() < 130 and #text > 22 then
+            text = text:sub(1, 19) .. "..."
+          end
+
+          return text .. " "
         end,
         hl = { fg = colors.lsp_text, bold = true },
       },
+
       hl = { fg = colors.black, bg = colors.cyan, bold = true },
     }
 
@@ -287,6 +339,7 @@ return {
       condition = function()
         return show_lsp() and #vim.lsp.get_clients({ bufnr = 0 }) > 0
       end,
+
       { provider = "", hl = { fg = colors.cyan } },
       LSP,
       { provider = "", hl = { fg = colors.cyan } },
@@ -308,9 +361,11 @@ return {
           or (g.changed or 0) > 0
           or (g.removed or 0) > 0
       end,
+
       init = function(self)
         self.g = vim.b.gitsigns_status_dict or {}
       end,
+
       {
         provider = function(self)
           if (self.g.added or 0) > 0 then
@@ -320,6 +375,7 @@ return {
         end,
         hl = { fg = colors.add, bold = true },
       },
+
       {
         provider = function(self)
           if (self.g.changed or 0) > 0 then
@@ -329,6 +385,7 @@ return {
         end,
         hl = { fg = colors.change, bold = true },
       },
+
       {
         provider = function(self)
           if (self.g.removed or 0) > 0 then
@@ -338,7 +395,9 @@ return {
         end,
         hl = { fg = colors.remove, bold = true },
       },
+
       hl = { fg = colors.black, bg = colors.gitred, bold = true },
+
       update = {
         "BufEnter",
         "BufWritePost",
@@ -351,6 +410,10 @@ return {
 
     local GitChangesBlock = {
       condition = function()
+        if win_width() < 80 then
+          return false
+        end
+
         if not conditions.is_git_repo() then
           return false
         end
@@ -365,6 +428,7 @@ return {
           or (g.changed or 0) > 0
           or (g.removed or 0) > 0
       end,
+
       { provider = "", hl = { fg = colors.gitred } },
       GitChanges,
       { provider = "", hl = { fg = colors.gitred } },
@@ -372,20 +436,12 @@ return {
 
     local Ruler = Bubble(colors.blue, colors.black, {
       {
-        provider = "",
-        hl = { fg = colors.ruler_icon, bold = true },
-      },
-      {
         provider = " %l:%c ",
         hl = { fg = colors.ruler_text, bold = true },
       },
     })
 
     local Scroll = Bubble(colors.green, colors.black, {
-      {
-        provider = "",
-        hl = { fg = colors.scroll_icon, bold = true },
-      },
       {
         provider = " %p%% ",
         hl = { fg = colors.scroll_text, bold = true },
@@ -399,7 +455,9 @@ return {
           return { fg = mode_color() }
         end,
       },
+
       ViMode,
+
       {
         provider = "",
         hl = function()
@@ -437,6 +495,7 @@ return {
     })
 
     vim.o.laststatus = 3
+
     vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
     vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "NONE" })
   end,

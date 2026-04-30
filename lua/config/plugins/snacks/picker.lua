@@ -24,6 +24,10 @@ local function set_picker_hl()
   vim.api.nvim_set_hl(0, "SnacksPickerInput", { bg = "none" })
   vim.api.nvim_set_hl(0, "SnacksPickerList", { bg = "none" })
   vim.api.nvim_set_hl(0, "SnacksPickerPreview", { bg = "none" })
+
+  vim.api.nvim_set_hl(0, "FloatTitle", { fg = cyan, bg = "none", bold = true })
+  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+  vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 end
 
 set_picker_hl()

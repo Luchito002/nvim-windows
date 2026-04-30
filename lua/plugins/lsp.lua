@@ -4,7 +4,6 @@ return {
     "mason-org/mason.nvim",
     "mason-org/mason-lspconfig.nvim",
     "folke/neodev.nvim",
-    "seblyng/roslyn.nvim",
   },
   config = function()
     vim.diagnostic.config({
@@ -23,8 +22,14 @@ return {
     })
 
     vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
-    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
-    vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+
+    vim.keymap.set("n", "]d", function()
+      vim.diagnostic.jump({ count = 1, float = true })
+    end, { desc = "Next diagnostic" })
+
+    vim.keymap.set("n", "[d", function()
+      vim.diagnostic.jump({ count = -1, float = true })
+    end, { desc = "Previous diagnostic" })
     vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist)
 
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -34,13 +39,19 @@ return {
         local opts = { buffer = bufnr }
 
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
         vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
         vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
         vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
         vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
-        vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+        vim.keymap.set("n", "gr", function()
+          Snacks.picker.lsp_references()
+        end, { buffer = bufnr, desc = "LSP References" })
+        vim.keymap.set("n", "gd", function()
+          Snacks.picker.lsp_definitions()
+        end, { buffer = bufnr, desc = "Definitions" })
+        vim.keymap.set("n", "gi", function()
+          Snacks.picker.lsp_implementations()
+        end, { buffer = bufnr, desc = "Implementations" })
         vim.keymap.set("n", "<space>f", function()
           vim.lsp.buf.format({ async = true })
         end, opts)
@@ -121,14 +132,6 @@ return {
         cshtml = "razor",
       },
     })
-
-    vim.lsp.config("roslyn", {
-      capabilities = capabilities,
-      on_attach = function(client, bufnr)
-        client.server_capabilities.semanticTokensProvider = nil
-      end,
-    })
-
     require("mason-lspconfig").setup({
       ensure_installed = {
         "lua_ls",
@@ -143,7 +146,6 @@ return {
         "prismals",
         "html",
         "emmet_language_server",
-        --"roslyn",
         "vue_ls",
       },
       automatic_enable = true,
@@ -161,7 +163,6 @@ return {
       "gradle_ls",
       "prismals",
       "html",
-      "roslyn",
       "emmet_language_server",
       "vue_ls",
     })

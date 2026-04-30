@@ -1,25 +1,26 @@
 return {
   "oribarilan/lensline.nvim",
-  enabled = false,
-  tag = "2.0.0",
+  tag = "2.1.0",
   event = "LspAttach",
   config = function()
     require("lensline").setup({
       profiles = {
         {
-          name = "vs_like",
+          name = "default",
           providers = {
             {
               name = "usages",
               enabled = true,
-              include = { "refs", "defs", "impls" },
-              breakdown = true,
+              highlight = "LensLineRefs",
             },
-            { name = "last_author", enabled = true },
-            { name = "diagnostics", enabled = true },
+            {
+              name = "last_author",
+              enabled = true,
+              highlight = "LensLineAuthor",
+            },
           },
           style = {
-            render = "all",
+            highlight = "LensLine",
             placement = "above",
           },
         },
