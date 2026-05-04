@@ -6,10 +6,10 @@ return {
   config = function()
     local harpoon = require("harpoon")
 
-    -- OBLIGATORIO
+    -- REQUIRED
     harpoon:setup()
 
-    -- Agregar archivo
+    -- Add file
     vim.keymap.set("n", "<leader>a", function()
       harpoon:list():add()
     end, { desc = "Harpoon Add File" })
@@ -19,12 +19,12 @@ return {
       harpoon:list():remove()
     end)
 
-    -- Menú de harpoon
+    -- Harpoon menu
     vim.keymap.set("n", "<leader>h", function()
       harpoon.ui:toggle_quick_menu(harpoon:list())
     end, { desc = "Harpoon Menu" })
 
-    -- Navegación rápida
+    -- Quick navigation
     vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
     vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
     vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
@@ -32,7 +32,7 @@ return {
     vim.keymap.set("n", "<leader>5", function() harpoon:list():select(5) end)
     vim.keymap.set("n", "<leader>6", function() harpoon:list():select(6) end)
 
-    -- Siguiente / anterior
+    -- Next / previous
     vim.keymap.set("n", "<C-n>", function() harpoon:list():next() end)
     vim.keymap.set("n", "<C-p>", function() harpoon:list():prev() end)
   end,

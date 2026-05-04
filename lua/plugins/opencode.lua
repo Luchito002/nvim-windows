@@ -1,17 +1,9 @@
 return {
   "sudo-tee/opencode.nvim",
   dependencies = {
-    "nvim-lua/plenary.nvim",
-    {
-      "MeanderingProgrammer/render-markdown.nvim",
-      opts = {
-        anti_conceal = { enabled = false },
-        file_types = { "markdown", "opencode_output" },
-      },
-      ft = { "markdown", "opencode_output" },
-    },
-    "folke/snacks.nvim",
-    "saghen/blink.cmp",
+    "nvim-lua/plenary.nvim", -- utilidades Lua compartidas por muchos plugins
+    "folke/snacks.nvim",     -- componentes de UI
+    "saghen/blink.cmp",      -- autocompletado
   },
   config = function()
     require("opencode").setup({
@@ -79,10 +71,31 @@ return {
           ["<tab>"] = { "toggle_pane", mode = { "n", "i" } },
           ["i"] = { "focus_input", mode = { "n" } },
           ["<M-r>"] = { "cycle_variant", mode = { "n" } },
-          ["<leader>oS"] = { "select_child_session" },
+
+          ["<leader>oS"] = {
+            function()
+              vim.cmd("Opencode session navigate child")
+            end,
+            desc = "Select child session",
+          },
+
+          ["<leader>oP"] = {
+            function()
+              vim.cmd("Opencode session navigate parent")
+            end,
+            desc = "Select parent session",
+          },
+
+          ["<leader>oB"] = {
+            function()
+              vim.cmd("Opencode session navigate sibling")
+            end,
+            desc = "Select sibling session",
+          },
+
           ["<leader>oD"] = { "debug_message" },
           ["<leader>oO"] = { "debug_output" },
-        },
+        }
       },
 
       ui = {

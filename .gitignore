@@ -1,0 +1,25 @@
+# OS / explorer noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Neovim runtime leftovers
+*.swp
+*.swo
+*~
+
+# Local logs
+log
+logfile
+*.log
+
+# Local sessions / temp
+Session.vim
+*.session
+
+# Secrets / local env files
+.env
+.env.*
+!.env.example
+
+lazy-lock.json

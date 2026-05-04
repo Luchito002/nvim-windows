@@ -1,7 +1,8 @@
 return {
   "oribarilan/lensline.nvim",
-  tag = "2.1.0",
+  branch = "release/2.x",
   event = "LspAttach",
+  enabled = false,
   config = function()
     require("lensline").setup({
       profiles = {

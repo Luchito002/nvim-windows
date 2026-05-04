@@ -1,5 +1,6 @@
 return {
   "mistweaverco/kulala.nvim",
+  enabled = false,
   ft = { "http", "rest" },
   keys = {
     { "<leader>rs", function() require("kulala").run() end,        desc = "Send request" },

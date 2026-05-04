@@ -1,7 +1,7 @@
 return {
   "epwalsh/obsidian.nvim",
   version = "*",
-
+  enabled = false,
   cmd = {
     "ObsidianNew",
     "ObsidianOpen",

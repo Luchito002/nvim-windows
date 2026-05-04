@@ -12,6 +12,8 @@ return {
       install_dir = vim.fn.stdpath("data") .. "/site",
     })
 
+    vim.treesitter.language.register("markdown", "opencode_output")
+
     ts.install({
       "lua",
       "javascript",
@@ -25,7 +27,9 @@ return {
       "prisma",
       "http",
       "json",
-      "css"
+      "css",
+      "markdown",
+      "markdown_inline",
     })
 
     vim.api.nvim_create_autocmd("FileType", {
@@ -43,13 +47,16 @@ return {
         "prisma",
         "http",
         "json",
-        "css"
+        "css",
+        "markdown",
+        "opencode_output",
       },
       callback = function(ev)
         pcall(vim.treesitter.start, ev.buf)
-        vim.wo[0][0].foldmethod = "expr"
-        vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-        vim.wo[0][0].foldlevel = 99
+
+        vim.wo.foldmethod = "expr"
+        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        vim.wo.foldlevel = 99
       end,
     })
   end,
