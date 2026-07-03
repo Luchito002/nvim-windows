@@ -7,7 +7,20 @@ return {
   },
   config = function()
     vim.diagnostic.config({
-      virtual_text = true,
+      --virtual_text = true,
+      virtual_text = {
+        prefix = function(diagnostic)
+          local icons = {
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN]  = " ",
+            [vim.diagnostic.severity.INFO]  = " ",
+            [vim.diagnostic.severity.HINT]  = " ",
+          }
+
+          return icons[diagnostic.severity]
+        end,
+      },
+
       signs = {
         text = {
           [vim.diagnostic.severity.ERROR] = "",
@@ -21,15 +34,30 @@ return {
       severity_sort = true,
     })
 
-    vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
+    vim.keymap.set("n", "<space>e", function()
+      vim.diagnostic.open_float({
+        border = "rounded",
+      })
+    end, { desc = "Open diagnostic float" })
 
     vim.keymap.set("n", "]d", function()
-      vim.diagnostic.jump({ count = 1, float = true })
+      vim.diagnostic.jump({
+        count = 1,
+        float = {
+          border = "rounded",
+        },
+      })
     end, { desc = "Next diagnostic" })
 
     vim.keymap.set("n", "[d", function()
-      vim.diagnostic.jump({ count = -1, float = true })
+      vim.diagnostic.jump({
+        count = -1,
+        float = {
+          border = "rounded",
+        },
+      })
     end, { desc = "Previous diagnostic" })
+
     vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist)
 
     vim.api.nvim_create_autocmd("LspAttach", {

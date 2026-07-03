@@ -180,7 +180,7 @@ return {
           local filename = vim.fn.expand("%:t")
 
           if filename == "" then
-            return "  "
+            return " "
           end
 
           local ext = vim.fn.expand("%:e")

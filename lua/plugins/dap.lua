@@ -8,57 +8,57 @@ return {
   },
 
   config = function()
-    local function patch_nvim_dap_windows_breakpoints()
-      if vim.fn.has("win32") == 0 then
-        return false
-      end
+     local function patch_nvim_dap_windows_breakpoints()
+       if vim.fn.has("win32") == 0 then
+         return false
+       end
 
-      local session_file = vim.fn.stdpath("data") .. "/lazy/nvim-dap/lua/dap/session.lua"
+       local session_file = vim.fn.stdpath("data") .. "/lazy/nvim-dap/lua/dap/session.lua"
 
-      if vim.fn.filereadable(session_file) == 0 then
-        vim.notify("nvim-dap session.lua no encontrado", vim.log.levels.WARN)
-        return false
-      end
+       if vim.fn.filereadable(session_file) == 0 then
+         vim.notify("nvim-dap session.lua no encontrado", vim.log.levels.WARN)
+         return false
+       end
 
-      local ok, lines = pcall(vim.fn.readfile, session_file)
-      if not ok or not lines then
-        vim.notify("No se pudo leer session.lua de nvim-dap", vim.log.levels.ERROR)
-        return false
-      end
+       local ok, lines = pcall(vim.fn.readfile, session_file)
+       if not ok or not lines then
+         vim.notify("No se pudo leer session.lua de nvim-dap", vim.log.levels.ERROR)
+         return false
+       end
 
-      local content = table.concat(lines, "\n")
+       local content = table.concat(lines, "\n")
 
-      if content:find('path = path:gsub("/", "\\\\");', 1, true) then
-        return false
-      end
+       if content:find('path = path:gsub("/", "\\\\");', 1, true) then
+         return false
+       end
 
-      local new_content, count = content:gsub(
-        "path%s*=%s*path%s*;",
-        'path = path:gsub("/", "\\\\");',
-        1
-      )
+       local new_content, count = content:gsub(
+         "path%s*=%s*path%s*;",
+         'path = path:gsub("/", "\\\\");',
+         1
+       )
 
-      if count == 0 then
-        vim.notify("No se encontró el path correcto en session.lua", vim.log.levels.WARN)
-        return false
-      end
+       if count == 0 then
+         vim.notify("No se encontró el path correcto en session.lua", vim.log.levels.WARN)
+         return false
+       end
 
-      local write_ok = pcall(vim.fn.writefile, vim.split(new_content, "\n", { plain = true }), session_file)
-      if not write_ok then
-        vim.notify("No se pudo escribir el parche en session.lua", vim.log.levels.ERROR)
-        return false
-      end
+       local write_ok = pcall(vim.fn.writefile, vim.split(new_content, "\n", { plain = true }), session_file)
+       if not write_ok then
+         vim.notify("No se pudo escribir el parche en session.lua", vim.log.levels.ERROR)
+         return false
+       end
 
-      vim.notify("Parche aplicado correctamente a nvim-dap", vim.log.levels.INFO)
-      return true
-    end
+       vim.notify("Parche aplicado correctamente a nvim-dap", vim.log.levels.INFO)
+       return true
+     end
 
-    local patched_now = patch_nvim_dap_windows_breakpoints()
+     local patched_now = patch_nvim_dap_windows_breakpoints()
 
-    if patched_now then
-      package.loaded["dap"] = nil
-      package.loaded["dap.session"] = nil
-    end
+     if patched_now then
+       package.loaded["dap"] = nil
+       package.loaded["dap.session"] = nil
+     end
 
     local dap = require("dap")
     local dapui = require("dapui")
@@ -155,13 +155,13 @@ return {
       },
     })
 
-    vim.keymap.set("n", "db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
-    vim.keymap.set("n", "dc", dap.continue, { desc = "Continue" })
-    vim.keymap.set("n", "dr", dap.repl.open, { desc = "Open REPL" })
-    vim.keymap.set("n", "ds", dap.step_over, { desc = "Step over" })
-    vim.keymap.set("n", "di", dap.step_into, { desc = "Step into" })
-    vim.keymap.set("n", "do", dap.step_out, { desc = "Step out" })
-    vim.keymap.set("n", "dj", function() require("dap").run_to_cursor() end, { desc = "Run to cursor" })
+    vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+    vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Continue" })
+    vim.keymap.set("n", "<leader>dr", dap.repl.open, { desc = "Open REPL" })
+    vim.keymap.set("n", "<leader>ds", dap.step_over, { desc = "Step over" })
+    vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Step into" })
+    vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Step out" })
+    vim.keymap.set("n", "<leader>dj", function() require("dap").run_to_cursor() end, { desc = "Run to cursor" })
 
     vim.keymap.set("v", "K", function()
       dapui.eval(nil, {
@@ -182,10 +182,8 @@ return {
       dapui.close()
     end
 
-    require("config.plugins.dap.python")
-
     local csharp = require("config.plugins.dap.csharp")
-    vim.keymap.set("n", "dp", function()
+    vim.keymap.set("n", "<leader>dp", function()
       csharp.pick_entry()
     end, { desc = "Pick .NET project" })
   end,

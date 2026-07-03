@@ -2,6 +2,7 @@
     "diagnostics.disable": [
         "unused-local",
         "inject-field",
-        "redundant-parameter"
+        "redundant-parameter",
+        "undefined-field"
     ]
 }

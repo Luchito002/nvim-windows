@@ -112,5 +112,27 @@ return {
         },
       },
     })
+
+
+
+    -- Desactivar folds en ventanas/buffers de opencode
+    vim.api.nvim_create_autocmd({ "FileType", "BufEnter", "WinEnter" }, {
+      callback = function()
+        local ft = vim.bo.filetype
+        local bt = vim.bo.buftype
+        local name = vim.api.nvim_buf_get_name(0)
+
+        if ft:lower():find("opencode")
+            or name:lower():find("opencode")
+            or bt == "nofile"
+        then
+          vim.opt_local.foldenable = false
+          vim.opt_local.foldcolumn = "0"
+          vim.opt_local.foldmethod = "manual"
+          vim.opt_local.foldlevel = 99
+          vim.opt_local.foldlevelstart = 99
+        end
+      end,
+    })
   end,
 }

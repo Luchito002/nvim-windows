@@ -9,20 +9,6 @@ vim.o.fillchars = 'eob: '
 
 vim.o.cursorline = false
 
--- for not to lose the windows terminal cursor styles
--- vim.opt.guicursor = ""
-
-vim.api.nvim_create_autocmd("BufWinLeave", {
-  callback = function()
-    if vim.bo.filetype == "oil" then
-      os.execute(
-        "touch '/mnt/c/Users/luis/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json'")
-    end
-  end,
-})
-
-vim.g.python3_host_prog = vim.fn.expand("~/.venvs/nvim/bin/python3")
-
 vim.opt.title = true
 vim.opt.autoindent = true
 vim.opt.hlsearch = true
@@ -110,12 +96,6 @@ vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 -- opcional (por si blink usa estos)
 vim.api.nvim_set_hl(0, "BlinkCmpDoc", { bg = "none" })
 vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { bg = "none" })
-
-
-vim.keymap.set("n", "<leader>o", function()
-  local file = vim.fn.expand("%")
-  vim.fn.jobstart({ "cmd", "/c", "start", file }, { detach = true })
-end)
 
 vim.opt.autoread = true
 

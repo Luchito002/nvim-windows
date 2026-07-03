@@ -20,16 +20,15 @@ return {
     words = { enabled = false },
     zen = { enabled = true },
     terminal = require("config.plugins.snacks.terminal"),
-    lazygit = require("config.plugins.snacks.lazygit")
+    lazygit = require("config.plugins.snacks.lazygit"),
   },
 
   keys = {
     { "<leader><leader>", function() Snacks.picker.files() end,        desc = "Find Files" },
-    { "<leader>w",        function() Snacks.picker.grep() end,         desc = "Find Word" },
-    { "<leader>r",        function() Snacks.picker.recent() end,       desc = "Recent files" },
-    { "<leader>b",        function() Snacks.picker.buffers() end,      desc = "Open Buffers" },
-    { "<leader>th",       function() Snacks.picker.help() end,         desc = "Open Help tags" },
-    { "<leader>c",        function() Snacks.picker.colorschemes() end, desc = "Select colorscheme" },
+    { "<leader>pw",       function() Snacks.picker.grep() end,         desc = "Find Word" },
+    { "<leader>pb",       function() Snacks.picker.buffers() end,      desc = "Open Buffers" },
+    { "<leader>ph",       function() Snacks.picker.help() end,         desc = "Open Help tags" },
+    { "<leader>pc",       function() Snacks.picker.colorschemes() end, desc = "Select colorscheme" },
 
     { "<leader>-",        function() Snacks.explorer() end,            desc = "Explorer" },
 

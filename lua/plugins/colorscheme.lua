@@ -6,7 +6,7 @@ return {
     opts = {
       transparent = true,
       styles = {
-        comments = { italic = true },
+        comments = { italic = false },
         keywords = { bold = true },
       },
 
@@ -44,8 +44,17 @@ return {
 
       -- extras UI
       vim.api.nvim_set_hl(0, "Visual", { bg = "#5c2a2a", fg = "NONE" })
-      vim.api.nvim_set_hl(0, "CursorLine", { bg = "#5c2a2a" })
+      -- vim.api.nvim_set_hl(0, "CursorLine", { bg = "#5c2a2a" })
       vim.api.nvim_set_hl(0, "MatchParen", { bg = "NONE", fg = "NONE" })
+
+      -- floating windows
+      vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#27a1b9", bg = "NONE" })
+      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
+
+      vim.api.nvim_set_hl(0, "Directory", { fg = "#6C71C4" })
+
+      vim.api.nvim_set_hl(0, "SnacksExplorerDir", { fg = "#6C71C4" })
+      vim.api.nvim_set_hl(0, "SnacksExplorerIconDirectory", { fg = "#6C71C4" })
     end,
   },
 }

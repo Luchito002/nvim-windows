@@ -3,10 +3,22 @@ local registry = require("config.plugins.dap.csharp_debug_paths")
 
 local M = {}
 
+-- modern .NET
 dap.adapters.coreclr = {
   type = "executable",
   command = "D:/Tools/netcoredbg/netcoredbg.exe",
   args = { "--interpreter=vscode" },
+  options = {
+    detached = false,
+  },
+}
+
+-- ASP.NET Framework / IIS Express
+dap.adapters.clr = {
+  type = "executable",
+  command = "C:/Users/LCalle/vsdbg/vsdbg.exe",
+  args = { "--interpreter=vscode" },
+
   options = {
     detached = false,
   },
@@ -36,27 +48,43 @@ function M.pick_entry()
 end
 
 dap.configurations.cs = {
+
+  -- modern .NET
   {
     type = "coreclr",
     name = "Launch registered .NET project",
     request = "launch",
+
     program = function()
       if not selected then
         vim.notify("先にプロジェクトを選択してください", vim.log.levels.WARN)
         return nil
       end
+
       return selected.program
     end,
+
     cwd = function()
       return selected and selected.cwd or vim.fn.getcwd()
     end,
+
     stopAtEntry = false,
     justMyCode = false,
     console = "integratedTerminal",
+
     env = function()
       return (selected and selected.env) or {}
     end,
   },
+
+  -- ASP.NET classic framework
+  {
+    type = "clr",
+    name = "Attach IIS Express",
+    request = "attach",
+    processId = require("dap.utils").pick_process,
+    justMyCode = false,
+  }
 }
 
 return M
