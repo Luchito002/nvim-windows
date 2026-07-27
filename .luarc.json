@@ -3,6 +3,7 @@
         "unused-local",
         "inject-field",
         "redundant-parameter",
-        "undefined-field"
+        "undefined-field",
+        "undefined-doc-name"
     ]
 }

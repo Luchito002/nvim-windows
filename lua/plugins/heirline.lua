@@ -1,6 +1,7 @@
 return {
   "rebelot/heirline.nvim",
   event = "UiEnter",
+  enabled =  true,
   dependencies = {
     "nvim-tree/nvim-web-devicons",
   },
@@ -8,153 +9,204 @@ return {
     local conditions = require("heirline.conditions")
     local devicons = require("nvim-web-devicons")
 
-    local colors = {
-      fg = "#839496",
-      black = "#00141a",
+    local colors = {}
 
-      red = "#ab031f",
-      green = "#859900",
-      blue = "#268bd2",
-      yellow = "#b58900",
-      orange = "#cb4b16",
-      purple = "#6c71c4",
-      cyan = "#2aa198",
+    local function set_colors()
+      local is_light = vim.o.background == "light"
 
-      gray = "#073642",
-      diag = "#002b36",
+      local palette = is_light and {
+        fg = "#586e75",
+        black = "#073642",
 
-      mode_text = "#00141a",
+        red = "#f8d7da",
+        green = "#e8f1cf",
+        blue = "#dbeaf5",
+        yellow = "#b58900",
+        orange = "#cb4b16",
+        purple = "#e7def8",
+        cyan = "#d8f1ec",
 
-      file_icon = "#2aa198",
-      file_text = "#93a1a1",
+        gray = "#f4efe4",
+        diag = "#eee8d5",
 
-      gitred = "#3b0d14",
-      git_icon = "#1f7a1f",
-      git_text = "#93a1a1",
+        mode_text = "#073642",
 
-      diag_err = "#ab031f",
-      diag_warn = "#b58900",
+        file_icon = "#2aa198",
+        file_text = "#586e75",
 
-      lsp_icon = "#00141a",
-      lsp_text = "#00141a",
+        gitred = "#f9e6de",
+        git_icon = "#1f7a1f",
+        git_text = "#586e75",
 
-      ruler_icon = "#00141a",
-      ruler_text = "#00141a",
-      scroll_icon = "#00141a",
-      scroll_text = "#00141a",
+        diag_err = "#ab031f",
+        diag_warn = "#b58900",
 
-      add = "#859900",
-      change = "#b58900",
-      remove = "#ab031f",
-    }
+        lsp_icon = "#073642",
+        lsp_text = "#073642",
 
-    local Align = { provider = "%=" }
-    local Space = { provider = " " }
+        ruler_icon = "#073642",
+        ruler_text = "#073642",
+        scroll_icon = "#073642",
+        scroll_text = "#073642",
 
-    local function win_width()
-      return vim.api.nvim_win_get_width(0)
-    end
+        add = "#859900",
+        change = "#b58900",
+        remove = "#ab031f",
+      } or {
+        fg = "#839496",
+        black = "#00141a",
 
-    local function enough(width)
-      return win_width() >= width
-    end
+        red = "#ab031f",
+        green = "#859900",
+        blue = "#268bd2",
+        yellow = "#b58900",
+        orange = "#cb4b16",
+        purple = "#6c71c4",
+        cyan = "#2aa198",
 
-    local function is_narrow()
-      return not enough(90)
-    end
+        gray = "#073642",
+        diag = "#002b36",
 
-    local function is_tiny()
-      return not enough(70)
-    end
+        mode_text = "#00141a",
 
-    local function show_branch()
-      return enough(85)
-    end
+        file_icon = "#2aa198",
+        file_text = "#93a1a1",
 
-    local function show_lsp()
-      return enough(115)
-    end
+        gitred = "#3b0d14",
+        git_icon = "#1f7a1f",
+        git_text = "#93a1a1",
 
-    local Bubble = function(bg, fg, content)
-      local body = {
-        hl = { bg = bg, fg = fg, bold = true },
+        diag_err = "#ab031f",
+        diag_warn = "#b58900",
+
+        lsp_icon = "#00141a",
+        lsp_text = "#00141a",
+
+        ruler_icon = "#00141a",
+        ruler_text = "#00141a",
+        scroll_icon = "#00141a",
+        scroll_text = "#00141a",
+
+        add = "#859900",
+        change = "#b58900",
+        remove = "#ab031f",
       }
 
-      vim.list_extend(body, content)
-
-      return {
-        { provider = "", hl = { fg = bg } },
-        body,
-        { provider = "", hl = { fg = bg } },
-      }
+      for k, v in pairs(palette) do
+        colors[k] = v
+      end
     end
 
-    local mode_color = function()
-      local m = vim.fn.mode(1)
+    set_colors()
 
-      local map = {
-        n = colors.blue,
-        no = colors.blue,
-        i = colors.green,
-        ic = colors.green,
-        v = colors.purple,
-        V = colors.purple,
-        ["\22"] = colors.purple,
-        c = colors.orange,
-        R = colors.red,
-        r = colors.red,
-        t = colors.red,
-      }
+    local function build_statusline()
+      local Align = { provider = "%=" }
+      local Space = { provider = " " }
 
-      return map[m] or map[m:sub(1, 1)] or colors.blue
-    end
+      local function win_width()
+        return vim.api.nvim_win_get_width(0)
+      end
 
-    local ViMode = {
-      init = function(self)
-        self.mode = vim.fn.mode(1)
-      end,
+      local function enough(width)
+        return win_width() >= width
+      end
 
-      static = {
-        names = {
-          n = "通常",
-          i = "挿入",
-          v = "選択",
-          V = "行選択",
-          ["\22"] = "矩形選択",
-          c = "命令",
-          R = "置換",
-          t = "端末",
-        },
-      },
+      local function is_narrow()
+        return not enough(90)
+      end
 
-      {
-        provider = "  ",
-        hl = { fg = colors.mode_text, bold = true },
-      },
+      local function is_tiny()
+        return not enough(70)
+      end
 
-      {
-        provider = function(self)
-          return (self.names[self.mode] or self.mode) .. " "
-        end,
-        hl = { fg = colors.mode_text, bold = true },
-      },
+      local function show_branch()
+        return enough(85)
+      end
 
-      hl = function()
-        return {
-          fg = colors.mode_text,
-          bg = mode_color(),
-          bold = true,
+      local function show_lsp()
+        return enough(115)
+      end
+
+      local Bubble = function(bg, fg, content)
+        local body = {
+          hl = { bg = bg, fg = fg, bold = true },
         }
-      end,
 
-      update = {
-        "ModeChanged",
-        pattern = "*:*",
-        callback = vim.schedule_wrap(function()
-          vim.cmd("redrawstatus")
-        end),
-      },
-    }
+        vim.list_extend(body, content)
+
+        return {
+          { provider = "", hl = { fg = bg } },
+          body,
+          { provider = "", hl = { fg = bg } },
+        }
+      end
+
+      local mode_color = function()
+        local m = vim.fn.mode(1)
+
+        local map = {
+          n = colors.blue,
+          no = colors.blue,
+          i = colors.green,
+          ic = colors.green,
+          v = colors.purple,
+          V = colors.purple,
+          ["\22"] = colors.purple,
+          c = colors.orange,
+          R = colors.red,
+          r = colors.red,
+          t = colors.red,
+        }
+
+        return map[m] or map[m:sub(1, 1)] or colors.blue
+      end
+
+      local ViMode = {
+        init = function(self)
+          self.mode = vim.fn.mode(1)
+        end,
+
+        static = {
+          names = {
+            n = "通常",
+            i = "挿入",
+            v = "選択",
+            V = "行選択",
+            ["\22"] = "矩形選択",
+            c = "命令",
+            R = "置換",
+            t = "端末",
+          },
+        },
+
+        {
+          provider = "  ",
+          hl = { fg = colors.mode_text, bold = true },
+        },
+
+        {
+          provider = function(self)
+            return (self.names[self.mode] or self.mode) .. " "
+          end,
+          hl = { fg = colors.mode_text, bold = true },
+        },
+
+        hl = function()
+          return {
+            fg = colors.mode_text,
+            bg = mode_color(),
+            bold = true,
+          }
+        end,
+
+        update = {
+          "ModeChanged",
+          pattern = "*:*",
+          callback = vim.schedule_wrap(function()
+            vim.cmd("redrawstatus")
+          end),
+        },
+      }
 
     local FileName = {
       {
@@ -466,37 +518,58 @@ return {
       },
     }
 
-    local StatusLine = {
-      hl = { bg = "NONE", fg = colors.fg },
+      local StatusLine = {
+        hl = { bg = "NONE", fg = colors.fg },
 
-      Space,
-      ModeBlock,
-      Space,
-      FileBlock,
-      Space,
-      GitBranchBlock,
-      Space,
-      DiagnosticsBlock,
+        Space,
+        ModeBlock,
+        Space,
+        FileBlock,
+        Space,
+        GitBranchBlock,
+        Space,
+        DiagnosticsBlock,
 
-      Align,
+        Align,
 
-      GitChangesBlock,
-      Space,
-      LSPBlock,
-      Space,
-      Ruler,
-      Space,
-      -- Scroll,
-      -- Space,
-    }
+        GitChangesBlock,
+        Space,
+        LSPBlock,
+        Space,
+        Ruler,
+        Space,
+        -- Scroll,
+        -- Space,
+      }
 
-    require("heirline").setup({
-      statusline = StatusLine,
+      return StatusLine
+    end
+
+    local function setup_statusline()
+      set_colors()
+
+      require("heirline").setup({
+        statusline = build_statusline(),
+      })
+
+      vim.o.laststatus = 3
+
+      vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
+      vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "NONE" })
+    end
+
+    setup_statusline()
+
+    vim.api.nvim_create_autocmd({ "ColorScheme", "OptionSet" }, {
+      pattern = { "*", "background" },
+      callback = function(args)
+        if args.event == "OptionSet" and args.match ~= "background" then
+          return
+        end
+
+        setup_statusline()
+        vim.cmd("redrawstatus")
+      end,
     })
-
-    vim.o.laststatus = 3
-
-    vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
-    vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "NONE" })
   end,
 }

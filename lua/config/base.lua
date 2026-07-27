@@ -16,6 +16,7 @@ vim.opt.backup = false
 vim.opt.showcmd = true
 vim.opt.cmdheight = 1
 vim.opt.laststatus = 2
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 vim.opt.expandtab = true
 vim.opt.scrolloff = 10
 --vim.opt.shell = 'fish'
