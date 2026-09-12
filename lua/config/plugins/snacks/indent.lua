@@ -21,16 +21,11 @@ local function enhance(hex, factor, sat_boost)
 end
 
 local base_colors = {
-  "#8A6A6A",
-  "#8A845F",
-  "#6A7F95",
-  "#8A7A65",
-  "#6F8A6F",
-  "#7F6A8A",
-  "#6A8A8A",
+  "#8A6A6A", "#8A845F", "#6A7F95", "#8A7A65", "#6F8A6F", "#7F6A8A", "#6A8A8A",
 }
 
 local function set_indent_hl()
+
   for i, color in ipairs(base_colors) do
     vim.api.nvim_set_hl(0, "SnacksIndent" .. i, {
       fg = enhance(color, 0.20, 0.45),

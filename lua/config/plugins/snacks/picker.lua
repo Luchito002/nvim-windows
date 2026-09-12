@@ -3,20 +3,20 @@ local function set_picker_hl()
   local purple = "#B284BE"
   local green = "#5de4c7"
 
-  -- General title/border for left block
-  vim.api.nvim_set_hl(0, "SnacksPickerBorder", { fg = cyan })
+  -- Todos los bordes flotantes usan el mismo color que los separadores de ventana.
+  vim.api.nvim_set_hl(0, "SnacksPickerBorder", { link = "WinSeparator" })
   vim.api.nvim_set_hl(0, "SnacksPickerTitle", { fg = cyan, bold = true })
 
   -- Input
-  vim.api.nvim_set_hl(0, "SnacksPickerInputBorder", { fg = cyan })
+  vim.api.nvim_set_hl(0, "SnacksPickerInputBorder", { link = "WinSeparator" })
   vim.api.nvim_set_hl(0, "SnacksPickerInputTitle", { fg = cyan, bold = true })
 
   -- Results
-  vim.api.nvim_set_hl(0, "SnacksPickerListBorder", { fg = purple })
+  vim.api.nvim_set_hl(0, "SnacksPickerListBorder", { link = "WinSeparator" })
   vim.api.nvim_set_hl(0, "SnacksPickerListTitle", { fg = purple, bold = true })
 
   -- Preview
-  vim.api.nvim_set_hl(0, "SnacksPickerPreviewBorder", { fg = green })
+  vim.api.nvim_set_hl(0, "SnacksPickerPreviewBorder", { link = "WinSeparator" })
   vim.api.nvim_set_hl(0, "SnacksPickerPreviewTitle", { fg = green, bold = true })
 
   -- Transparent backgrounds
@@ -27,7 +27,7 @@ local function set_picker_hl()
 
   vim.api.nvim_set_hl(0, "FloatTitle", { fg = cyan, bg = "none", bold = true })
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-  vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
+  vim.api.nvim_set_hl(0, "FloatBorder", { link = "WinSeparator" })
 end
 
 set_picker_hl()

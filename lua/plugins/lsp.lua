@@ -134,7 +134,6 @@ return {
     vim.lsp.config("jsonls", { capabilities = capabilities })
     vim.lsp.config("eslint", { capabilities = capabilities })
     vim.lsp.config("tailwindcss", { capabilities = capabilities })
-    vim.lsp.config("gradle_ls", { capabilities = capabilities })
     vim.lsp.config("prismals", { capabilities = capabilities })
     vim.lsp.config("html", {
       capabilities = capabilities,
@@ -170,7 +169,6 @@ return {
         "jsonls",
         "eslint",
         "tailwindcss",
-        "gradle_ls",
         "prismals",
         "html",
         "emmet_language_server",
@@ -188,7 +186,6 @@ return {
       "jsonls",
       "eslint",
       "tailwindcss",
-      "gradle_ls",
       "prismals",
       "html",
       "emmet_language_server",

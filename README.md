@@ -103,7 +103,6 @@ Below is the plugin set grouped by purpose.
 - `nvim-treesitter/nvim-treesitter` - Syntax parsing/highlighting/folds
 - `jlcrochet/vim-razor` - Razor/Cshtml support
 - `seblyng/roslyn.nvim` - C# Roslyn integration
-- `mfussenegger/nvim-jdtls` - Java integration helper
 
 ### Debugging and testing
 
@@ -136,7 +135,7 @@ Configured in `lua/plugins/lsp.lua` with shared `on_attach` mappings and capabil
 
 Servers include:
 
-- `lua_ls`, `clangd`, `pyright`, `ts_ls`, `cssls`, `jsonls`, `eslint`, `tailwindcss`, `html`, `emmet_language_server`, `vue_ls`, `gradle_ls`, `prismals`
+- `lua_ls`, `clangd`, `pyright`, `ts_ls`, `cssls`, `jsonls`, `eslint`, `tailwindcss`, `html`, `emmet_language_server`, `vue_ls`, `prismals`
 
 ### C#
 
@@ -144,10 +143,6 @@ Servers include:
 - Razor filetype mappings for `.razor` and `.cshtml`
 - C# file template autocreation for empty/new `.cs` files
 - Dedicated ftplugin (`ftplugin/csharp.lua`)
-
-### Java
-
-- `ftplugin/java.lua` handles jdtls startup and root/workspace detection
 
 ### Debugging
 
@@ -167,7 +162,6 @@ Servers include:
 ## Filetype Overrides
 
 - `ftplugin/csharp.lua` - C# local options
-- `ftplugin/java.lua` - Java LSP startup routine
 
 ## Environment Assumptions
 
@@ -184,7 +178,7 @@ It also sets:
 - `CC=gcc`
 - `CXX=g++`
 
-Some plugin/tool paths are machine-specific (for example debugger binaries and external CLI paths). If you clone this config on another machine, review hardcoded paths in DAP, Java, and assistant-related plugin configs.
+Some plugin/tool paths are machine-specific (for example debugger binaries and external CLI paths). If you clone this config on another machine, review hardcoded paths in DAP and assistant-related plugin configs.
 
 ## Recommended First Run
 

@@ -5,6 +5,15 @@ return {
   dependencies = {
     "nvim-neotest/nvim-nio",
     "rcarriga/nvim-dap-ui",
+    {
+      "microsoft/vscode-js-debug",
+      build = table.concat({
+        "npm install --legacy-peer-deps --ignore-scripts --no-package-lock",
+        "npx gulp vsDebugServerBundle",
+        "if not exist out mkdir out",
+        "xcopy /E /I /Y dist out",
+      }, " && "),
+    },
   },
 
   config = function()
@@ -62,16 +71,24 @@ return {
 
     local dap = require("dap")
     local dapui = require("dapui")
+    local dapui_resizing = false
 
-    -- DAP colors
-    vim.api.nvim_set_hl(0, "DapRed", { fg = "#ab031f" })
-    vim.api.nvim_set_hl(0, "DapYellow", { fg = "#b58900" })
-    vim.api.nvim_set_hl(0, "DapGreen", { fg = "#859900" })
-    vim.api.nvim_set_hl(0, "DapBlue", { fg = "#268bd2" })
-    vim.api.nvim_set_hl(0, "DapCyan", { fg = "#2aa198" })
-    vim.api.nvim_set_hl(0, "DapPurple", { fg = "#6c71c4" })
-    vim.api.nvim_set_hl(0, "DapGray", { fg = "#586e75" })
-    vim.api.nvim_set_hl(0, "DapOrange", { fg = "#cb4b16" })
+    local function set_dap_colors()
+      local colors = {
+        Red = "#ab031f", Yellow = "#b58900", Green = "#859900", Blue = "#268bd2",
+        Cyan = "#2aa198", Purple = "#6c71c4", Gray = "#586e75", Orange = "#cb4b16",
+      }
+
+      for name, color in pairs(colors) do
+        vim.api.nvim_set_hl(0, "Dap" .. name, { fg = color })
+      end
+    end
+
+    set_dap_colors()
+    vim.api.nvim_create_autocmd("ColorScheme", {
+      group = vim.api.nvim_create_augroup("DapThemeColors", { clear = true }),
+      callback = set_dap_colors,
+    })
 
     -- DAP signs
     vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DapRed", linehl = "", numhl = "" })
@@ -110,17 +127,11 @@ return {
       layouts = {
         {
           elements = {
-            { id = "scopes",      size = 0.6 },
-            { id = "breakpoints", size = 0.4 },
+            { id = "breakpoints", size = 0.33 },
+            { id = "scopes",      size = 0.33 },
+            { id = "repl",        size = 0.34 },
           },
-          size = 30,
-          position = "left",
-        },
-        {
-          elements = {
-            { id = "repl", size = 1.0 },
-          },
-          size = 10,
+          size = 0.3,
           position = "bottom",
         },
       },
@@ -129,14 +140,14 @@ return {
         enabled = true,
         element = "repl",
         icons = {
-          pause = "⏸",
-          play = "▶",
-          step_into = "⤵",
-          step_over = "⤼",
-          step_out = "⤴",
-          step_back = "⤺",
-          run_last = "↻",
-          terminate = "■",
+          pause = "󰏤",
+          play = "󰐊",
+          step_into = "󰆹",
+          step_over = "󰆷",
+          step_out = "󰆸",
+          step_back = "󰁍",
+          run_last = "󰑓",
+          terminate = "󰅖",
         },
       },
 
@@ -171,7 +182,7 @@ return {
     end, { desc = "DAP eval selection" })
 
     dap.listeners.after.event_initialized["dapui_config"] = function()
-      dapui.open()
+      dapui.open({ reset = true })
     end
 
     dap.listeners.before.event_terminated["dapui_config"] = function()
@@ -182,7 +193,25 @@ return {
       dapui.close()
     end
 
+    vim.api.nvim_create_autocmd({ "WinResized", "VimResized" }, {
+      group = vim.api.nvim_create_augroup("DapUiResponsiveLayout", { clear = true }),
+      callback = function()
+        if dapui_resizing or not dap.session() then
+          return
+        end
+
+        dapui_resizing = true
+
+        vim.schedule(function()
+          pcall(dapui.open, { reset = true })
+          dapui_resizing = false
+        end)
+      end,
+    })
+
     local csharp = require("config.plugins.dap.csharp")
+    require("config.plugins.dap.javascript").setup()
+
     vim.keymap.set("n", "<leader>dp", function()
       csharp.pick_entry()
     end, { desc = "Pick .NET project" })

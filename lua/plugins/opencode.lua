@@ -1,5 +1,6 @@
 return {
   "sudo-tee/opencode.nvim",
+  enabled = false,
   dependencies = {
     "nvim-lua/plenary.nvim", -- utilidades Lua compartidas por muchos plugins
     "folke/snacks.nvim",     -- componentes de UI

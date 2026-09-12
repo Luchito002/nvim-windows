@@ -38,11 +38,6 @@ vim.opt.wildignore:append { '*/node_modules*/' }
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
 vim.cmd([[let &t_Ce = "\e[4:0m"]])
 
--- Line color when splitting windows
--- vim.cmd('highlight WinSeparator guibg=#4A628A guifg=#7AB2D3')
-vim.cmd('highlight WinSeparator guifg=#5f8fa3')
-
-
 vim.api.nvim_create_autocmd("InsertLeave", {
   pattern = '*',
   command = "set nopaste"
@@ -91,17 +86,9 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
   end,
 })
 
-vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
-
--- opcional (por si blink usa estos)
-vim.api.nvim_set_hl(0, "BlinkCmpDoc", { bg = "none" })
-vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { bg = "none" })
-
 vim.opt.autoread = true
 
 vim.api.nvim_create_autocmd({
-  "FocusGained",
   "BufEnter",
   "CursorHold",
   "CursorHoldI",

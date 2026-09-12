@@ -20,8 +20,6 @@ return {
 
         cs = { "csharpier" },
         razor = { "csharpier" },
-
-        java = { "google-java-format" },
       },
 
       format_on_save = {
