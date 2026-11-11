@@ -27,8 +27,12 @@ return {
       "http",
       "json",
       "css",
+      "java",
+      "yaml",
       "markdown",
       "markdown_inline",
+      "regex",
+      "bash",
     })
 
     vim.api.nvim_create_autocmd("FileType", {
@@ -46,11 +50,17 @@ return {
         "http",
         "json",
         "css",
+        "java",
+        "yaml",
         "markdown",
         "opencode_output",
       },
       callback = function(ev)
         pcall(vim.treesitter.start, ev.buf)
+
+        if vim.bo[ev.buf].filetype == "java" then
+          return
+        end
 
         vim.wo.foldmethod = "expr"
         vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"

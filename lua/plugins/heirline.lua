@@ -344,27 +344,6 @@ return {
         }),
       }
 
-      local LSP = {
-        condition = function()
-          return enough(118) and #vim.lsp.get_clients({ bufnr = 0 }) > 0
-        end,
-
-        section(" lsp ", function()
-          local names = {}
-
-          for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
-            names[#names + 1] = client.name
-          end
-
-          local text = table.concat(names, " + ")
-          return truncate(text, enough(150) and 34 or 20) .. " "
-        end, {
-          accent = colors.purple,
-          label_fg = colors.purple,
-          value_fg = colors.fg,
-        }),
-      }
-
       local Cursor = section(" pos ", function()
         return string.format("%3d:%-2d ", vim.fn.line("."), vim.fn.col("."))
       end, {
@@ -385,7 +364,6 @@ return {
         Align,
 
         GitChanges,
-        LSP,
         Cursor,
         { provider = " " },
       }

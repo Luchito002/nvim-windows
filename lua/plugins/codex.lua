@@ -31,7 +31,7 @@ return {
     panel = true,
     width = 0.40,
     height = 0.8,
-    cmd = "codex",
+    cmd = { "codex", "--no-daemon" },
     model = nil,
     autoinstall = false,
     use_buffer = false,

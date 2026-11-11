@@ -13,7 +13,20 @@ return {
     picker = require("config.plugins.snacks.picker"),
     notifier = { enabled = true },
     quickfile = { enabled = false },
-    scope = { enabled = false },
+    scope = {
+      enabled = true,
+      min_size = 2,
+      cursor = true,
+      edge = true,
+      siblings = false,
+      treesitter = {
+        enabled = true,
+        injections = true,
+        blocks = {
+          enabled = true,
+        },
+      },
+    },
     scroll = { enabled = true },
     statuscolumn = { enabled = true },
     rename = { enabled = true },

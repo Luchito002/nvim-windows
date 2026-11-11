@@ -173,8 +173,11 @@ return {
         "html",
         "emmet_language_server",
         "vue_ls",
+        "jdtls",
       },
-      automatic_enable = true,
+      automatic_enable = {
+        exclude = { "jdtls", "roslyn_ls" },
+      },
     })
 
     vim.lsp.enable({

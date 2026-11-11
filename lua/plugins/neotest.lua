@@ -6,6 +6,7 @@ return {
     "antoinemadec/FixCursorHold.nvim",
     "nsidorenco/neotest-vstest",
   },
+  enabled = false,
   config = function()
     local sep = package.config:sub(1, 1)
 

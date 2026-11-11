@@ -22,13 +22,20 @@ return {
         razor = { "csharpier" },
       },
 
+      formatters = {
+        prettier = {
+          command = function()
+            return vim.fn.getcwd() .. "/node_modules/.bin/prettier.exe"
+          end,
+        },
+      },
+
       format_on_save = {
         timeout_ms = 2000,
         lsp_fallback = true,
       },
     })
 
-    -- keymap opcional (mejor que usar el del LSP)
     vim.keymap.set("n", "<leader>f", function()
       require("conform").format({ async = true })
     end, { desc = "Format file" })

@@ -1,12 +1,16 @@
 return {
   "seblyng/roslyn.nvim",
-  ft = "cs",
+  ft = { "cs", "razor" },
+
   opts = {
     broad_search = true,
-    lock_target = true,
-    filewatching = "roslyn",
+    lock_target = false,
+    filewatching = "off",
   },
+
   config = function(_, opts)
+    vim.env.ROSLYN_LANGUAGE_SERVER_DAEMON_KEEPALIVE = "0"
+
     require("roslyn").setup(opts)
 
     vim.api.nvim_create_autocmd("LspAttach", {

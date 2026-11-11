@@ -6,68 +6,66 @@ return {
     "nvim-neotest/nvim-nio",
     "rcarriga/nvim-dap-ui",
     {
-      "microsoft/vscode-js-debug",
-      build = table.concat({
-        "npm install --legacy-peer-deps --ignore-scripts --no-package-lock",
-        "npx gulp vsDebugServerBundle",
-        "if not exist out mkdir out",
-        "xcopy /E /I /Y dist out",
-      }, " && "),
+      "theHamsta/nvim-dap-virtual-text",
+      enabled = false,
+      config = function()
+        require("nvim-dap-virtual-text").setup({})
+      end,
     },
   },
 
   config = function()
-     local function patch_nvim_dap_windows_breakpoints()
-       if vim.fn.has("win32") == 0 then
-         return false
-       end
+    local function patch_nvim_dap_windows_breakpoints()
+      if vim.fn.has("win32") == 0 then
+        return false
+      end
 
-       local session_file = vim.fn.stdpath("data") .. "/lazy/nvim-dap/lua/dap/session.lua"
+      local session_file = vim.fn.stdpath("data") .. "/lazy/nvim-dap/lua/dap/session.lua"
 
-       if vim.fn.filereadable(session_file) == 0 then
-         vim.notify("nvim-dap session.lua no encontrado", vim.log.levels.WARN)
-         return false
-       end
+      if vim.fn.filereadable(session_file) == 0 then
+        vim.notify("nvim-dap session.lua no encontrado", vim.log.levels.WARN)
+        return false
+      end
 
-       local ok, lines = pcall(vim.fn.readfile, session_file)
-       if not ok or not lines then
-         vim.notify("No se pudo leer session.lua de nvim-dap", vim.log.levels.ERROR)
-         return false
-       end
+      local ok, lines = pcall(vim.fn.readfile, session_file)
+      if not ok or not lines then
+        vim.notify("No se pudo leer session.lua de nvim-dap", vim.log.levels.ERROR)
+        return false
+      end
 
-       local content = table.concat(lines, "\n")
+      local content = table.concat(lines, "\n")
 
-       if content:find('path = path:gsub("/", "\\\\");', 1, true) then
-         return false
-       end
+      if content:find('path = path:gsub("/", "\\\\");', 1, true) then
+        return false
+      end
 
-       local new_content, count = content:gsub(
-         "path%s*=%s*path%s*;",
-         'path = path:gsub("/", "\\\\");',
-         1
-       )
+      local new_content, count = content:gsub(
+        "path%s*=%s*path%s*;",
+        'path = path:gsub("/", "\\\\");',
+        1
+      )
 
-       if count == 0 then
-         vim.notify("No se encontró el path correcto en session.lua", vim.log.levels.WARN)
-         return false
-       end
+      if count == 0 then
+        vim.notify("No se encontró el path correcto en session.lua", vim.log.levels.WARN)
+        return false
+      end
 
-       local write_ok = pcall(vim.fn.writefile, vim.split(new_content, "\n", { plain = true }), session_file)
-       if not write_ok then
-         vim.notify("No se pudo escribir el parche en session.lua", vim.log.levels.ERROR)
-         return false
-       end
+      local write_ok = pcall(vim.fn.writefile, vim.split(new_content, "\n", { plain = true }), session_file)
+      if not write_ok then
+        vim.notify("No se pudo escribir el parche en session.lua", vim.log.levels.ERROR)
+        return false
+      end
 
-       vim.notify("Parche aplicado correctamente a nvim-dap", vim.log.levels.INFO)
-       return true
-     end
+      vim.notify("Parche aplicado correctamente a nvim-dap", vim.log.levels.INFO)
+      return true
+    end
 
-     local patched_now = patch_nvim_dap_windows_breakpoints()
+    local patched_now = patch_nvim_dap_windows_breakpoints()
 
-     if patched_now then
-       package.loaded["dap"] = nil
-       package.loaded["dap.session"] = nil
-     end
+    if patched_now then
+      package.loaded["dap"] = nil
+      package.loaded["dap.session"] = nil
+    end
 
     local dap = require("dap")
     local dapui = require("dapui")
@@ -75,8 +73,14 @@ return {
 
     local function set_dap_colors()
       local colors = {
-        Red = "#ab031f", Yellow = "#b58900", Green = "#859900", Blue = "#268bd2",
-        Cyan = "#2aa198", Purple = "#6c71c4", Gray = "#586e75", Orange = "#cb4b16",
+        Red = "#ab031f",
+        Yellow = "#b58900",
+        Green = "#859900",
+        Blue = "#268bd2",
+        Cyan = "#2aa198",
+        Purple = "#6c71c4",
+        Gray = "#586e75",
+        Orange = "#cb4b16",
       }
 
       for name, color in pairs(colors) do
@@ -127,9 +131,8 @@ return {
       layouts = {
         {
           elements = {
-            { id = "breakpoints", size = 0.33 },
-            { id = "scopes",      size = 0.33 },
-            { id = "repl",        size = 0.34 },
+            { id = "scopes", size = 0.5 },
+            { id = "repl",   size = 0.5 },
           },
           size = 0.3,
           position = "bottom",
